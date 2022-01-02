@@ -11,7 +11,8 @@
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "api:dev": "turbo run api:dev"
+    "api:dev": "turbo run api:dev",
+    "web:dev": "turbo run web:dev"
   },
   "devDependencies": {
     "prettier": "^2.5.1",
@@ -39,6 +40,11 @@
         "dependsOn": [
           "api#dev"
         ]
+      },
+      "web:dev": {
+        "dependsOn": [
+          "web#dev"
+        ]
       }
     },
     "baseBranch": "origin/main"
@@ -46,5 +52,11 @@
   "engines": {
     "npm": ">=7.0.0",
     "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "@chakra-ui/react": "^1.7.3",
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
+    "framer-motion": "^5.5.5"
   }
 }
