@@ -46,7 +46,6 @@ type Post {
 
 input PostInput {
   headline: String!
-  postedById: String!
   text: String!
   topicID: String!
 }
