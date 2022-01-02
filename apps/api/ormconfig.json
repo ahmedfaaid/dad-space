@@ -1,0 +1,11 @@
+{
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5544,
+  "username": "postgres",
+  "password": "postgres",
+  "database": "dad-space",
+  "entities": ["src/entities/*.ts"],
+  "synchronize": true,
+  "logging": true
+}
