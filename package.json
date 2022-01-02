@@ -10,7 +10,8 @@
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "api:dev": "turbo run api:dev"
   },
   "devDependencies": {
     "prettier": "^2.5.1",
@@ -24,7 +25,8 @@
         ],
         "outputs": [
           "dist/**",
-          ".next/**"
+          ".next/**",
+          "build/**"
         ]
       },
       "lint": {
@@ -32,6 +34,11 @@
       },
       "dev": {
         "cache": false
+      },
+      "api:dev": {
+        "dependsOn": [
+          "api#dev"
+        ]
       }
     },
     "baseBranch": "origin/main"
