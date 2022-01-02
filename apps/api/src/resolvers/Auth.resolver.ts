@@ -73,4 +73,19 @@ export class AuthResolver {
 
     return newUser;
   }
+
+  @Mutation(() => Boolean)
+  async logout(@Ctx() ctx: Context): Promise<boolean> {
+    return new Promise((resolve, reject) =>
+      ctx.req.session.destroy(err => {
+        if (err) {
+          console.error(err);
+          return reject(false);
+        }
+
+        ctx.res.clearCookie('dad-space-qid');
+        return resolve(true);
+      })
+    );
+  }
 }
