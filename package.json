@@ -54,9 +54,12 @@
     "node": ">=14.0.0"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^1.1.1",
     "@chakra-ui/react": "^1.7.3",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
+    "@fontsource/open-sans": "^4.5.2",
+    "@fontsource/source-sans-pro": "^4.5.1",
     "framer-motion": "^5.5.5"
   }
 }
