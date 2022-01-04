@@ -22,7 +22,12 @@ export default function Navbar() {
         </Center>
         <Spacer />
         <Center>
-          <Input variant='filled' placeholder='Search for a topic' w='300px' />
+          <Input
+            variant='filled'
+            placeholder='Search for a topic'
+            w='300px'
+            bgColor='#f1f1f1'
+          />
         </Center>
         <Spacer />
         <Center>
