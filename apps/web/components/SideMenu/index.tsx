@@ -9,9 +9,8 @@ function MenuItem({ to, icon, text }) {
         justify='flex-start'
         align='center'
         w='100%'
-        py={4}
+        p={4}
         ml={-4}
-        pl={4}
         cursor='pointer'
         _hover={{
           bg: '#F1F1F1',
