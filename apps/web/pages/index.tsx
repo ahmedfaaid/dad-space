@@ -1,5 +1,6 @@
 import { Grid, GridItem, Button } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
+import { Btn } from 'ui';
 
 import Layout from '../components/layout';
 import SideMenu from '../components/SideMenu';
@@ -11,15 +12,14 @@ export default function Web() {
         <SideMenu />
         <GridItem bg='yellow' colSpan={5} />
         <GridItem>
-          <Button
+          <Btn
             leftIcon={<AddIcon w={3} h={3} />}
             bg='star-command-blue'
-            colorScheme='white'
-            w='100%'
-            _hover={{ bg: 'navy-blue' }}
-          >
-            Start a new post
-          </Button>
+            color='white'
+            width='100%'
+            hoverBg='navy-blue'
+            text='Start a new post'
+          />
         </GridItem>
       </Grid>
     </Layout>
