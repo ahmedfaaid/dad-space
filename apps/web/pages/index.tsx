@@ -1,12 +1,13 @@
 import { Grid, GridItem } from '@chakra-ui/react';
 
 import Layout from '../components/layout';
+import SideMenu from '../components/SideMenu';
 
 export default function Web() {
   return (
     <Layout>
-      <Grid templateColumns='repeat(7, 1fr)'>
-        <GridItem bg='tomato' />
+      <Grid templateColumns='repeat(7, 1fr)' mt={16}>
+        <SideMenu />
         <GridItem bg='yellow' colSpan={5} />
         <GridItem bg='aqua' />
       </Grid>
