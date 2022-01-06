@@ -1,14 +1,5 @@
-import {
-  Box,
-  Flex,
-  Grid,
-  GridItem,
-  Heading,
-  Spacer,
-  Text,
-  VStack
-} from '@chakra-ui/react';
-import { AddIcon, ChevronUpIcon } from '@chakra-ui/icons';
+import { Box, Flex, Grid, GridItem } from '@chakra-ui/react';
+import { AddIcon } from '@chakra-ui/icons';
 import { Btn } from 'ui';
 
 import Layout from '../components/layout';
