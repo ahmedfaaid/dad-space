@@ -1,10 +1,11 @@
-import { Box, Flex, Grid, GridItem } from '@chakra-ui/react';
+import { Grid, GridItem } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import { Btn } from 'ui';
 
 import Layout from '../components/layout';
 import SideMenu from '../components/SideMenu';
 import TopTopics from '../components/TopTopics';
+import AdditionalLinks from '../components/AdditionalLinks';
 
 export default function Home() {
   return (
@@ -22,6 +23,7 @@ export default function Home() {
             text='Start a new post'
           />
           <TopTopics />
+          <AdditionalLinks />
         </GridItem>
       </Grid>
     </Layout>
