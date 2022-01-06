@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Box, Flex, Heading, Spacer, Text, VStack } from '@chakra-ui/react';
 import { ChevronUpIcon } from '@chakra-ui/icons';
 
@@ -8,16 +9,26 @@ interface TopItemProps {
 
 function TopItem({ topic, ups }: TopItemProps) {
   return (
-    <Flex align='center' w='100%' mt={4}>
-      <Text size='sm' color='star-command-blue'>
-        {topic}
-      </Text>
-      <Spacer />
-      <Text fontSize='12px' fontWeight='semibold' color='#7B7B7B' mr={2}>
-        {ups}k
-      </Text>
-      <ChevronUpIcon w={4} h={4} color='star-command-blue' />
-    </Flex>
+    <Link href={`/topics/${topic.toLowerCase()}`} passHref>
+      <Flex
+        align='center'
+        w='100%'
+        mt={4}
+        cursor='pointer'
+        _hover={{
+          bg: '#F1F1F1'
+        }}
+      >
+        <Text size='sm' color='star-command-blue'>
+          {topic}
+        </Text>
+        <Spacer />
+        <Text fontSize='12px' fontWeight='semibold' color='#7B7B7B' mr={2}>
+          {ups}k
+        </Text>
+        <ChevronUpIcon w={4} h={4} color='star-command-blue' />
+      </Flex>
+    </Link>
   );
 }
 
