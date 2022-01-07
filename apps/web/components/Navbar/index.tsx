@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Link from 'next/link';
 import {
   Flex,
   Center,
@@ -46,23 +47,29 @@ export default function Navbar() {
   } else {
     showBtnsOrAvatar = (
       <Stack direction='row' spacing={5}>
-        <Button
-          variant='outline'
-          borderColor='star-command-blue'
-          color='star-command-blue'
-          size='sm'
-        >
-          Login
-        </Button>
-        <Button
-          variant='solid'
-          bg='navy-blue'
-          color='white'
-          _hover={{ bg: 'star-command-blue' }}
-          size='sm'
-        >
-          Sign Up
-        </Button>
+        <Link href='/login' passHref>
+          <Button
+            as='a'
+            variant='outline'
+            borderColor='star-command-blue'
+            color='star-command-blue'
+            size='sm'
+          >
+            Login
+          </Button>
+        </Link>
+        <Link href='/signup' passHref>
+          <Button
+            as='a'
+            variant='solid'
+            bg='navy-blue'
+            color='white'
+            _hover={{ bg: 'star-command-blue' }}
+            size='sm'
+          >
+            Sign Up
+          </Button>
+        </Link>
       </Stack>
     );
   }
