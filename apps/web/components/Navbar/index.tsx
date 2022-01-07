@@ -1,13 +1,16 @@
 import {
   Flex,
   Center,
-  Text,
   Input,
   IconButton,
   Avatar,
   Spacer,
   Container,
-  Heading
+  Heading,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem
 } from '@chakra-ui/react';
 import { BellIcon } from '@chakra-ui/icons';
 
@@ -37,7 +40,16 @@ export default function Navbar() {
             mr={5}
             bg='white'
           />
-          <Avatar size='xs' src='https://bit.ly/broken-link' />
+          <Menu>
+            <MenuButton>
+              <Avatar size='xs' src='https://bit.ly/broken-link' />
+            </MenuButton>
+            <MenuList>
+              <MenuItem>Profile</MenuItem>
+              <MenuItem>Settings</MenuItem>
+              <MenuItem>Logout</MenuItem>
+            </MenuList>
+          </Menu>
         </Center>
       </Flex>
     </Container>
