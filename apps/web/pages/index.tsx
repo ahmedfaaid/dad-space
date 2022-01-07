@@ -6,13 +6,16 @@ import Layout from '../components/layout';
 import SideMenu from '../components/SideMenu';
 import TopTopics from '../components/TopTopics';
 import AdditionalLinks from '../components/AdditionalLinks';
+import FeaturedPosts from '../components/FeaturedPosts';
 
 export default function Home() {
   return (
     <Layout>
       <Grid templateColumns='repeat(6, 1fr)' columnGap={4} mt={16}>
         <SideMenu />
-        <GridItem bg='yellow' colSpan={4} />
+        <GridItem colSpan={4}>
+          <FeaturedPosts />
+        </GridItem>
         <GridItem>
           <Btn
             leftIcon={<AddIcon w={3} h={3} />}
