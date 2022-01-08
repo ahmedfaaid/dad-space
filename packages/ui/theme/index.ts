@@ -14,6 +14,9 @@ const customTheme = extendTheme({
   },
   styles: {
     global: {
+      html: {
+        'overflow-y': 'scroll'
+      },
       'html, body': {
         backgroundColor: '#f4f4f4',
         fontFamily: 'body'
