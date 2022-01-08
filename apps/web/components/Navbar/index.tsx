@@ -78,9 +78,11 @@ export default function Navbar() {
     <Container maxW='100%' bg='white' py={4} boxShadow='md'>
       <Flex maxW='1400px' mx='auto'>
         <Center>
-          <Heading as='h1' fontSize='18px'>
-            LOGO
-          </Heading>
+          <Link href='/' passHref>
+            <Heading as='h1' fontSize='18px' cursor='pointer'>
+              LOGO
+            </Heading>
+          </Link>
         </Center>
         <Spacer />
         <Center>
