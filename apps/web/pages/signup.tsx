@@ -14,13 +14,30 @@ import {
   InputRightElement,
   Button,
   Text,
-  Link
+  Link,
+  FormErrorMessage
 } from '@chakra-ui/react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import { useFormik } from 'formik';
 import Layout from '../components/layout';
+import { validationSchema } from '../utils/formValidation';
 
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
+  const { handleSubmit, handleChange, values, isSubmitting, touched, errors } =
+    useFormik({
+      initialValues: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: ''
+      },
+      validationSchema,
+      onSubmit: (values, { setSubmitting }) => {
+        console.log(values);
+        setSubmitting(false);
+      }
+    });
 
   return (
     <Layout>
@@ -40,63 +57,103 @@ export default function SignUp() {
             boxShadow='lg'
             p={8}
           >
-            <Stack spacing={4}>
-              <HStack>
-                <Box>
-                  <FormControl id='firstName' isRequired>
-                    <FormLabel>First Name</FormLabel>
-                    <Input type='text' />
-                  </FormControl>
-                </Box>
-                <Box>
-                  <FormControl id='lastName'>
-                    <FormLabel>Last Name</FormLabel>
-                    <Input type='text' />
-                  </FormControl>
-                </Box>
-              </HStack>
-              <FormControl id='email' isRequired>
-                <FormLabel>Email address</FormLabel>
-                <Input type='email' />
-              </FormControl>
-              <FormControl id='password' isRequired>
-                <FormLabel>Password</FormLabel>
-                <InputGroup>
-                  <Input type={showPassword ? 'text' : 'password'} />
-                  <InputRightElement h='full'>
-                    <Button
-                      variant='ghost'
-                      onClick={() =>
-                        setShowPassword(showPassword => !showPassword)
-                      }
-                    >
-                      {showPassword ? <ViewIcon /> : <ViewOffIcon />}
-                    </Button>
-                  </InputRightElement>
-                </InputGroup>
-              </FormControl>
-              <Stack spacing={10} pt={2}>
-                <Button
-                  loadingText='Submitting'
-                  size='lg'
-                  bg='star-command-blue'
-                  color='white'
-                  _hover={{
-                    bg: 'blue.500'
-                  }}
-                >
-                  Sign up
-                </Button>
+            <form onSubmit={handleSubmit}>
+              <Stack spacing={4}>
+                <HStack>
+                  <Box>
+                    <FormControl isRequired isInvalid={!!errors.firstName}>
+                      <FormLabel htmlFor='firstName'>First Name</FormLabel>
+                      <Input
+                        id='firstName'
+                        type='text'
+                        name='firstName'
+                        value={values.firstName}
+                        onChange={handleChange}
+                      />
+                    </FormControl>
+                  </Box>
+                  <Box>
+                    <FormControl isRequired isInvalid={!!errors.lastName}>
+                      <FormLabel htmlFor='lastName'>Last Name</FormLabel>
+                      <Input
+                        id='lastName'
+                        type='text'
+                        name='lastName'
+                        value={values.lastName}
+                        onChange={handleChange}
+                      />
+                    </FormControl>
+                  </Box>
+                  {errors.firstName ? (
+                    <FormErrorMessage>{errors.firstName}</FormErrorMessage>
+                  ) : null}
+                  {errors.lastName ? (
+                    <FormErrorMessage>{errors.lastName}</FormErrorMessage>
+                  ) : null}
+                </HStack>
+                <FormControl isRequired isInvalid={!!errors.email}>
+                  <FormLabel htmlFor='email'>Email address</FormLabel>
+                  <Input
+                    id='email'
+                    type='email'
+                    name='email'
+                    value={values.email}
+                    onChange={handleChange}
+                  />
+                  {errors.email ? (
+                    <FormErrorMessage>{errors.email}</FormErrorMessage>
+                  ) : null}
+                </FormControl>
+                <FormControl isRequired isInvalid={!!errors.password}>
+                  <FormLabel htmlFor='password'>Password</FormLabel>
+                  <InputGroup>
+                    <Input
+                      id='password'
+                      type={showPassword ? 'text' : 'password'}
+                      name='password'
+                      value={values.password}
+                      onChange={handleChange}
+                    />
+                    <InputRightElement h='full'>
+                      <Button
+                        variant='ghost'
+                        onClick={() =>
+                          setShowPassword(showPassword => !showPassword)
+                        }
+                      >
+                        {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                      </Button>
+                    </InputRightElement>
+                  </InputGroup>
+                  {errors.password ? (
+                    <FormErrorMessage>{errors.password}</FormErrorMessage>
+                  ) : null}
+                </FormControl>
+                <Stack spacing={10} pt={2}>
+                  <Button
+                    loadingText='Submitting'
+                    size='lg'
+                    bg='star-command-blue'
+                    color='white'
+                    _hover={{
+                      bg: 'blue.500'
+                    }}
+                    isLoading={isSubmitting}
+                    type='submit'
+                  >
+                    Sign up
+                  </Button>
+                </Stack>
+                <Stack pt={6}>
+                  <Text align='center'>
+                    Already a user?{' '}
+                    <NextLink href='/login' passHref>
+                      <Link color='star-command-blue'>Login</Link>
+                    </NextLink>
+                  </Text>
+                </Stack>
               </Stack>
-              <Stack pt={6}>
-                <Text align='center'>
-                  Already a user?{' '}
-                  <NextLink href='/login' passHref>
-                    <Link color='star-command-blue'>Login</Link>
-                  </NextLink>
-                </Text>
-              </Stack>
-            </Stack>
+            </form>
           </Box>
         </Stack>
       </Flex>
