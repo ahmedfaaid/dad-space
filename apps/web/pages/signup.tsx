@@ -15,17 +15,21 @@ import {
   Button,
   Text,
   Link,
-  FormErrorMessage
+  FormErrorMessage,
+  useToast
 } from '@chakra-ui/react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { useFormik } from 'formik';
-import { useMutation } from 'urql';
 import { useSignupMutation } from 'dad-gql';
 import Layout from '../components/layout';
 import { validationSchema } from '../utils/formValidation';
+import { useRouter } from 'next/router';
 
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
+  const toast = useToast();
+
   const [, signup] = useSignupMutation();
   const { handleSubmit, handleChange, values, isSubmitting, errors } =
     useFormik({
@@ -33,20 +37,34 @@ export default function SignUp() {
         firstName: '',
         lastName: '',
         email: '',
-        password: ''
+        password: '',
+        confirmPassword: ''
       },
       validationSchema,
-      onSubmit: async (values, { setSubmitting }) => {
-        console.log(values);
-        const res = await signup({ user: values });
+      onSubmit: async (values, { setSubmitting, setErrors }) => {
+        const { confirmPassword, ...user } = values;
+        const res = await signup({ user });
 
-        if (res.data?.signup === null) {
-          console.error('There was was error');
+        if (res.data?.signup.errors) {
+          toast({
+            title: 'Signup unsuccessful',
+            description: `There was an error signing up: ${res.data.signup.errors[0].message}`,
+            status: 'error',
+            duration: 9000,
+            isClosable: true
+          });
           setSubmitting(false);
-          return;
+        } else if (res.data?.signup.user) {
+          toast({
+            title: 'Signup Successful',
+            description: 'You have successfully signed up!',
+            status: 'success',
+            duration: 9000,
+            isClosable: true
+          });
+          router.push('/');
+          setSubmitting(false);
         }
-
-        setSubmitting(false);
       }
     });
 
@@ -59,7 +77,7 @@ export default function SignUp() {
               Sign up
             </Heading>
             <Text fontSize='lg' color='gray.600'>
-              to enjoy all of our cool features ✌️
+              to start interacting with other dads ✌️
             </Text>
           </Stack>
           <Box
@@ -138,6 +156,35 @@ export default function SignUp() {
                   </InputGroup>
                   {errors.password ? (
                     <FormErrorMessage>{errors.password}</FormErrorMessage>
+                  ) : null}
+                </FormControl>
+                <FormControl isRequired isInvalid={!!errors.confirmPassword}>
+                  <FormLabel htmlFor='confirmPassword'>
+                    Confirm Password
+                  </FormLabel>
+                  <InputGroup>
+                    <Input
+                      id='confirmPassword'
+                      type={showPassword ? 'text' : 'password'}
+                      name='confirmPassword'
+                      value={values.confirmPassword}
+                      onChange={handleChange}
+                    />
+                    <InputRightElement h='full'>
+                      <Button
+                        variant='ghost'
+                        onClick={() =>
+                          setShowPassword(showPassword => !showPassword)
+                        }
+                      >
+                        {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                      </Button>
+                    </InputRightElement>
+                  </InputGroup>
+                  {errors.confirmPassword ? (
+                    <FormErrorMessage>
+                      {errors.confirmPassword}
+                    </FormErrorMessage>
                   ) : null}
                 </FormControl>
                 <Stack spacing={10} pt={2}>

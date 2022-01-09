@@ -20,10 +20,10 @@ Dads unite!
 
 ### Client
 
-- [ ] Signup page
+- [x] Signup page
 - [ ] Login page
 - [ ] API integration
-  - [ ] Signup
+  - [x] Signup
   - [ ] Login
   - [ ] Logout
   - [ ] Post creation
