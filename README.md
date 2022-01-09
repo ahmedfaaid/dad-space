@@ -16,6 +16,7 @@ Dads unite!
 - [ ] Topic creation
 - [x] Comment creation
 - [ ] Use try-catch to handle resolver errors
+- [ ] Allow upvoting/downvoting on posts
 
 ### Client
 
