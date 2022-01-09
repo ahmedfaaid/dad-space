@@ -20,24 +20,13 @@ import {
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { useFormik } from 'formik';
 import { useMutation } from 'urql';
+import { useSignupMutation } from 'dad-gql';
 import Layout from '../components/layout';
 import { validationSchema } from '../utils/formValidation';
 
-const SIGNUP = `
-  mutation Signup($user: UserInput!) {
-    signup(user: $user) {
-      id
-      firstName
-      lastName
-      email
-      createdAt
-    }
-  }
-`;
-
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
-  const [, signup] = useMutation(SIGNUP);
+  const [, signup] = useSignupMutation();
   const { handleSubmit, handleChange, values, isSubmitting, errors } =
     useFormik({
       initialValues: {
@@ -47,9 +36,16 @@ export default function SignUp() {
         password: ''
       },
       validationSchema,
-      onSubmit: (values, { setSubmitting }) => {
+      onSubmit: async (values, { setSubmitting }) => {
         console.log(values);
-        signup({ user: values });
+        const res = await signup({ user: values });
+
+        if (res.data?.signup === null) {
+          console.error('There was was error');
+          setSubmitting(false);
+          return;
+        }
+
         setSubmitting(false);
       }
     });
