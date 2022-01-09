@@ -19,29 +19,35 @@ export class AuthResolver {
     });
   }
 
-  @Mutation(() => User, { nullable: true })
+  @Mutation(() => UserResponse, { nullable: true })
   async login(
     @Arg('email') email: string,
     @Arg('password') password: string,
     @Ctx() ctx: Context
-  ): Promise<User | null> {
+  ): Promise<UserResponse> {
     const userRepository = getRepository(User);
 
-    const user = await userRepository.findOne({ where: { email } });
+    try {
+      const user = await userRepository.findOne({ where: { email } });
 
-    if (!user) {
-      return null;
+      if (!user) {
+        throw new Error('Invalid email or password');
+      }
+
+      const valid = await argon2.verify(user.password, password);
+
+      if (!valid) {
+        throw new Error('Invalid email or password');
+      }
+
+      ctx.req.session.userId = user.id;
+
+      return { user };
+    } catch (err: any) {
+      return {
+        errors: [{ path: 'login', message: err.message }]
+      };
     }
-
-    const valid = await argon2.verify(user.password, password);
-
-    if (!valid) {
-      return null;
-    }
-
-    ctx.req.session.userId = user.id;
-
-    return user;
   }
 
   @Mutation(() => UserResponse, { nullable: true })
