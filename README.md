@@ -4,6 +4,8 @@ Dads unite!
 
 ## TODO
 
+- [ ] Move unshared deps from root to appropriate packages/apps
+
 ### API
 
 - [x] Auth flow
