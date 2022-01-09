@@ -1,7 +1,7 @@
 import { getRepository } from 'typeorm';
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import * as argon2 from 'argon2';
-import { User, UserInput } from '../entities/User.entity';
+import { User, UserInput, UserResponse } from '../entities/User.entity';
 import { Context } from '../types/Context';
 
 @Resolver()
@@ -44,34 +44,32 @@ export class AuthResolver {
     return user;
   }
 
-  @Mutation(() => User, { nullable: true })
+  @Mutation(() => UserResponse, { nullable: true })
   async signup(
     @Arg('user') user: UserInput,
     @Ctx() ctx: Context
-  ): Promise<User | null> {
+  ): Promise<UserResponse> {
     const userRepository = getRepository(User);
-
-    const existingUser = await userRepository.findOne({
-      where: { email: user.email }
-    });
-
-    if (existingUser) {
-      return null;
-    }
 
     const hashedPassword = await argon2.hash(user.password);
 
-    const newUser = await userRepository.save({
-      ...user,
-      password: hashedPassword,
-      posts: [],
-      comments: [],
-      moderates: []
-    });
+    try {
+      const newUser = await userRepository.save({
+        ...user,
+        password: hashedPassword,
+        posts: [],
+        comments: [],
+        moderates: []
+      });
 
-    ctx.req.session.userId = newUser.id;
+      ctx.req.session.userId = newUser.id;
 
-    return newUser;
+      return { user: newUser };
+    } catch (err: any) {
+      return {
+        errors: [{ path: 'email', message: 'Email already in use' }]
+      };
+    }
   }
 
   @Mutation(() => Boolean)

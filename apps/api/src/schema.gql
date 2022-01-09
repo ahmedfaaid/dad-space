@@ -26,12 +26,17 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 """
 scalar DateTime
 
+type Error {
+  message: String!
+  path: String!
+}
+
 type Mutation {
   createComment(comment: CommentInput!): Comment!
   createPost(post: PostInput!): Post!
   login(email: String!, password: String!): User
   logout: Boolean!
-  signup(user: UserInput!): User
+  signup(user: UserInput!): UserResponse
 }
 
 type Post {
@@ -88,4 +93,9 @@ input UserInput {
   firstName: String!
   lastName: String!
   password: String!
+}
+
+type UserResponse {
+  errors: [Error!]
+  user: User
 }
