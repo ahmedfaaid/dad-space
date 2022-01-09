@@ -73,7 +73,7 @@ export class AuthResolver {
       return { user: newUser };
     } catch (err: any) {
       return {
-        errors: [{ path: 'email', message: 'Email already in use' }]
+        errors: [{ path: 'signup', message: 'Email already in use' }]
       };
     }
   }
