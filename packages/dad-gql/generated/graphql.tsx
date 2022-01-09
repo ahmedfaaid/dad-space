@@ -36,13 +36,19 @@ export type CommentInput = {
   text: Scalars['String'];
 };
 
+export type Error = {
+  __typename?: 'Error';
+  message: Scalars['String'];
+  path: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createComment: Comment;
   createPost: Post;
-  login?: Maybe<User>;
+  login?: Maybe<UserResponse>;
   logout: Scalars['Boolean'];
-  signup?: Maybe<User>;
+  signup?: Maybe<UserResponse>;
 };
 
 
@@ -136,22 +142,34 @@ export type UserInput = {
   password: Scalars['String'];
 };
 
+export type UserResponse = {
+  __typename?: 'UserResponse';
+  errors?: Maybe<Array<Error>>;
+  user?: Maybe<User>;
+};
+
 export type SignupMutationVariables = Exact<{
   user: UserInput;
 }>;
 
 
-export type SignupMutation = { __typename?: 'Mutation', signup?: { __typename?: 'User', id: string, firstName: string, lastName: string, email: string, createdAt: any } | null | undefined };
+export type SignupMutation = { __typename?: 'Mutation', signup?: { __typename?: 'UserResponse', user?: { __typename?: 'User', id: string, firstName: string, lastName: string, email: string, createdAt: any } | null | undefined, errors?: Array<{ __typename?: 'Error', path: string, message: string }> | null | undefined } | null | undefined };
 
 
 export const SignupDocument = gql`
     mutation Signup($user: UserInput!) {
   signup(user: $user) {
-    id
-    firstName
-    lastName
-    email
-    createdAt
+    user {
+      id
+      firstName
+      lastName
+      email
+      createdAt
+    }
+    errors {
+      path
+      message
+    }
   }
 }
     `;

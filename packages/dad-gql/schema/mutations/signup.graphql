@@ -1,9 +1,15 @@
 mutation Signup($user: UserInput!) {
   signup(user: $user) {
-    id
-    firstName
-    lastName
-    email
-    createdAt
+    user {
+      id
+      firstName
+      lastName
+      email
+      createdAt
+    }
+    errors {
+      path
+      message
+    }
   }
 }
