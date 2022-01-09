@@ -12,9 +12,14 @@
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "api:dev": "turbo run api:dev",
-    "web:dev": "turbo run web:dev"
+    "web:dev": "turbo run web:dev",
+    "gql-gen": "graphql-codegen --config codegen.yml"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "2.3.1",
+    "@graphql-codegen/typescript": "2.4.2",
+    "@graphql-codegen/typescript-operations": "2.2.2",
+    "@graphql-codegen/typescript-urql": "^3.4.2",
     "prettier": "^2.5.1",
     "turbo": "latest"
   },
@@ -60,6 +65,7 @@
     "@emotion/styled": "^11.6.0",
     "@fontsource/open-sans": "^4.5.2",
     "@fontsource/source-sans-pro": "^4.5.1",
+    "@graphql-codegen/cli": "^2.3.1",
     "formik": "^2.2.9",
     "framer-motion": "^5.5.5",
     "graphql": "^15.8.0",
