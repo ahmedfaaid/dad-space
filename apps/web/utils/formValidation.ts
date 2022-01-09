@@ -8,5 +8,8 @@ export const validationSchema = Yup.object({
     .required('Please enter a valid email address'),
   password: Yup.string()
     .min(8, 'Password must be at least 8 characters long')
-    .required('Please enter a password')
+    .required('Please enter a password'),
+  confirmPassword: Yup.string()
+    .required('Please confirm your password')
+    .oneOf([Yup.ref('password')], 'Passwords must match'),
 });
