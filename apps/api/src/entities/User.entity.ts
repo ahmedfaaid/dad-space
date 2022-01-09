@@ -10,6 +10,7 @@ import { ObjectType, Field, InputType, ID } from 'type-graphql';
 import { Post } from './Post.entity';
 import { Comment } from './Comment.entity';
 import { Topic } from './Topic.entity';
+import { Error } from './Error.entity';
 
 @Entity()
 @ObjectType()
@@ -27,7 +28,7 @@ export class User {
   lastName: string;
 
   @Field()
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()
@@ -52,6 +53,15 @@ export class User {
   @Field()
   @CreateDateColumn()
   updatedAt: Date;
+}
+
+@ObjectType()
+export class UserResponse {
+  @Field(() => User, { nullable: true })
+  user?: User;
+
+  @Field(() => [Error], { nullable: true })
+  errors?: Error[];
 }
 
 @InputType()
