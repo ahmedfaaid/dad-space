@@ -16,6 +16,11 @@ Dads unite!
 - [ ] Topic creation
 - [x] Comment creation
 - [ ] Use try-catch to handle resolver errors
+  - [x] Auth
+  - [ ] User
+  - [ ] Topic
+  - [ ] Post
+  - [ ] Comment
 - [ ] Allow upvoting/downvoting on posts
 
 ### Client
@@ -25,7 +30,7 @@ Dads unite!
 - [ ] API integration
   - [x] Signup
   - [ ] Login
-  - [ ] Logout
+  - [x] Logout
   - [ ] Post creation
   - [ ] Comment on post
 - [ ] Auth state

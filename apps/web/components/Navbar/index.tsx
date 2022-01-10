@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import {
   Flex,
@@ -16,15 +16,17 @@ import {
   Button,
   Stack
 } from '@chakra-ui/react';
-import { useMeQuery } from 'dad-gql';
+import { useMeQuery, useLogoutMutation } from 'dad-gql';
 import { BellIcon } from '@chakra-ui/icons';
 
 export default function Navbar() {
   const [{ data }] = useMeQuery();
+  const [, logout] = useLogoutMutation();
+  const router = useRouter();
 
   let showBtnsOrAvatar;
 
-  if (data) {
+  if (data.me) {
     showBtnsOrAvatar = (
       <>
         <IconButton
@@ -40,7 +42,14 @@ export default function Navbar() {
           <MenuList>
             <MenuItem>Profile</MenuItem>
             <MenuItem>Settings</MenuItem>
-            <MenuItem>Logout</MenuItem>
+            <MenuItem
+              onClick={() => {
+                logout();
+                router.reload();
+              }}
+            >
+              Logout
+            </MenuItem>
           </MenuList>
         </Menu>
       </>
