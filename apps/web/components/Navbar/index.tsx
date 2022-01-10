@@ -16,14 +16,15 @@ import {
   Button,
   Stack
 } from '@chakra-ui/react';
+import { useMeQuery } from 'dad-gql';
 import { BellIcon } from '@chakra-ui/icons';
 
 export default function Navbar() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [{ data }] = useMeQuery();
 
   let showBtnsOrAvatar;
 
-  if (loggedIn) {
+  if (data) {
     showBtnsOrAvatar = (
       <>
         <IconButton
