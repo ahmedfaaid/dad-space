@@ -148,6 +148,11 @@ export type UserResponse = {
   user?: Maybe<User>;
 };
 
+export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
+
 export type SignupMutationVariables = Exact<{
   user: UserInput;
 }>;
@@ -161,6 +166,15 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: string, email: string, firstName: string, lastName: string } | null | undefined };
 
 
+export const LogoutDocument = gql`
+    mutation Logout {
+  logout
+}
+    `;
+
+export function useLogoutMutation() {
+  return Urql.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument);
+};
 export const SignupDocument = gql`
     mutation Signup($user: UserInput!) {
   signup(user: $user) {
