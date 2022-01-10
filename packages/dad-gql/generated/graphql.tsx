@@ -155,6 +155,11 @@ export type SignupMutationVariables = Exact<{
 
 export type SignupMutation = { __typename?: 'Mutation', signup?: { __typename?: 'UserResponse', user?: { __typename?: 'User', id: string, firstName: string, lastName: string, email: string, createdAt: any } | null | undefined, errors?: Array<{ __typename?: 'Error', path: string, message: string }> | null | undefined } | null | undefined };
 
+export type MeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: string, email: string, firstName: string, lastName: string } | null | undefined };
+
 
 export const SignupDocument = gql`
     mutation Signup($user: UserInput!) {
@@ -176,4 +181,18 @@ export const SignupDocument = gql`
 
 export function useSignupMutation() {
   return Urql.useMutation<SignupMutation, SignupMutationVariables>(SignupDocument);
+};
+export const MeDocument = gql`
+    query Me {
+  me {
+    id
+    email
+    firstName
+    lastName
+  }
+}
+    `;
+
+export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
 };
