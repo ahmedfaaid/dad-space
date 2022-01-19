@@ -22,7 +22,7 @@ import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { useFormik } from 'formik';
 import { useSignupMutation } from 'dad-gql';
 import Layout from '../components/layout';
-import { validationSchema } from '../utils/formValidation';
+import { signupSchema } from '../utils/formValidation';
 import { useRouter } from 'next/router';
 
 export default function SignUp() {
@@ -40,7 +40,7 @@ export default function SignUp() {
         password: '',
         confirmPassword: ''
       },
-      validationSchema,
+      validationSchema: signupSchema,
       onSubmit: async (values, { setSubmitting, setErrors }) => {
         const { confirmPassword, ...user } = values;
         const res = await signup({ user });
