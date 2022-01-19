@@ -26,7 +26,7 @@ export default function Navbar() {
 
   let showBtnsOrAvatar;
 
-  if (data.me) {
+  if (data?.me) {
     showBtnsOrAvatar = (
       <>
         <IconButton
