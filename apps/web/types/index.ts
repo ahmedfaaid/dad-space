@@ -4,3 +4,9 @@ export type User = {
   lastName: string;
   email: string;
 };
+
+export type AuthState = {
+  authContext: any;
+  user: User;
+  setUser: (user: User) => void;
+};
