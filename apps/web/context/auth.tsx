@@ -1,0 +1,40 @@
+import { createContext, useMemo, useState } from 'react';
+import {
+  useLoginMutation,
+  useLogoutMutation,
+  useSignupMutation
+} from 'dad-gql';
+import { User, AuthState } from '../types';
+
+const AuthContext = createContext<AuthState>(null);
+
+const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [, login] = useLoginMutation();
+
+  const authContext = useMemo(
+    () => ({
+      login: async data => {
+        const res = await login(data);
+
+        if (res.data?.login.errors) {
+          setUser(null);
+          return { ok: false, errors: res.data.login.errors[0].message };
+        } else if (res.data?.login.user) {
+          setUser(res.data.login.user);
+          return { ok: true };
+        }
+      }
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
+  return (
+    <AuthContext.Provider value={{ user, setUser, authContext }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export { AuthContext, AuthProvider };

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import {
@@ -20,16 +20,19 @@ import {
 } from '@chakra-ui/react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { useFormik } from 'formik';
-import { useLoginMutation } from 'dad-gql';
 import Layout from '../components/layout';
 import { loginSchema } from '../utils/formValidation';
+import { AuthContext } from '../context/auth';
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const toast = useToast();
+  const {
+    setUser,
+    authContext: { login }
+  } = useContext(AuthContext);
 
-  const [, login] = useLoginMutation();
   const { handleSubmit, handleChange, values, isSubmitting, errors } =
     useFormik({
       initialValues: {
@@ -37,19 +40,19 @@ export default function Login() {
         password: ''
       },
       validationSchema: loginSchema,
-      onSubmit: async (values, { setSubmitting, setErrors }) => {
+      onSubmit: async (values, { setSubmitting }) => {
         const res = await login(values);
 
-        if (res.data?.login.errors) {
+        if (!res.ok) {
           toast({
             title: 'Login unsuccessful',
-            description: `There was an error logging in: ${res.data.login.errors[0].message}`,
+            description: `There was an error logging in: ${res.errors}`,
             status: 'error',
             duration: 9000,
             isClosable: true
           });
           setSubmitting(false);
-        } else if (res.data?.login.user) {
+        } else if (res.ok) {
           toast({
             title: 'Login Successful',
             description: 'You have successfully logged in!',
@@ -91,6 +94,7 @@ export default function Login() {
                     name='email'
                     value={values.email}
                     onChange={handleChange}
+                    autoComplete='off'
                   />
                   {errors.email ? (
                     <FormErrorMessage>{errors.email}</FormErrorMessage>
