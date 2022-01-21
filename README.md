@@ -22,6 +22,7 @@ Dads unite!
   - [ ] Post
   - [ ] Comment
 - [ ] Allow upvoting/downvoting on posts
+- [ ] Query most popular posts
 
 ### Client
 
@@ -34,3 +35,6 @@ Dads unite!
   - [ ] Post creation
   - [ ] Comment on post
 - [x] Auth state
+- [ ] Profile page
+- [ ] Explore topics page
+- [ ] Single topic page with posts
