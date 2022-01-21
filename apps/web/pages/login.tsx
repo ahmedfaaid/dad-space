@@ -29,7 +29,6 @@ export default function Login() {
   const router = useRouter();
   const toast = useToast();
   const {
-    setUser,
     authContext: { login }
   } = useContext(AuthContext);
 
