@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import {
@@ -16,12 +17,15 @@ import {
   Button,
   Stack
 } from '@chakra-ui/react';
-import { useMeQuery, useLogoutMutation } from 'dad-gql';
+import { useMeQuery } from 'dad-gql';
 import { BellIcon } from '@chakra-ui/icons';
+import { AuthContext } from '../../context/auth';
 
 export default function Navbar() {
   const [{ data }] = useMeQuery();
-  const [, logout] = useLogoutMutation();
+  const {
+    authContext: { logout }
+  } = useContext(AuthContext);
   const router = useRouter();
 
   let showBtnsOrAvatar;
@@ -45,7 +49,11 @@ export default function Navbar() {
             <MenuItem
               onClick={() => {
                 logout();
-                router.reload();
+                if (router.pathname === '/') {
+                  router.reload();
+                } else {
+                  router.push('/');
+                }
               }}
             >
               Logout

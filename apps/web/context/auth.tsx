@@ -12,6 +12,7 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [, login] = useLoginMutation();
   const [, signup] = useSignupMutation();
+  const [, logout] = useLogoutMutation();
 
   const authContext = useMemo(
     () => ({
@@ -36,6 +37,10 @@ const AuthProvider = ({ children }) => {
           setUser(res.data.signup.user);
           return { ok: true };
         }
+      },
+      logout: async () => {
+        setUser(null);
+        await logout();
       }
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
