@@ -17,20 +17,19 @@ import {
   Button,
   Stack
 } from '@chakra-ui/react';
-import { useMeQuery } from 'dad-gql';
 import { BellIcon } from '@chakra-ui/icons';
 import { AuthContext } from '../../context/auth';
 
 export default function Navbar() {
-  const [{ data }] = useMeQuery();
   const {
+    user,
     authContext: { logout }
   } = useContext(AuthContext);
   const router = useRouter();
 
   let showBtnsOrAvatar;
 
-  if (data?.me) {
+  if (user) {
     showBtnsOrAvatar = (
       <>
         <IconButton

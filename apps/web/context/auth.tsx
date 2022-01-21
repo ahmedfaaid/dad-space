@@ -1,8 +1,9 @@
-import { createContext, useMemo, useState } from 'react';
+import { createContext, useMemo, useState, useEffect } from 'react';
 import {
   useLoginMutation,
   useLogoutMutation,
-  useSignupMutation
+  useSignupMutation,
+  useMeQuery
 } from 'dad-gql';
 import { User, AuthState } from '../types';
 
@@ -10,9 +11,18 @@ const AuthContext = createContext<AuthState>(null);
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [{ data }] = useMeQuery();
   const [, login] = useLoginMutation();
   const [, signup] = useSignupMutation();
   const [, logout] = useLogoutMutation();
+
+  useEffect(() => {
+    if (data?.me) {
+      setUser(data.me);
+    } else {
+      setUser(null);
+    }
+  }, [data]);
 
   const authContext = useMemo(
     () => ({
@@ -48,7 +58,7 @@ const AuthProvider = ({ children }) => {
   );
 
   return (
-    <AuthContext.Provider value={{ user, setUser, authContext }}>
+    <AuthContext.Provider value={{ user, authContext }}>
       {children}
     </AuthContext.Provider>
   );
