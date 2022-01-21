@@ -8,5 +8,4 @@ export type User = {
 export type AuthState = {
   authContext: any;
   user: User;
-  setUser: (user: User) => void;
 };
