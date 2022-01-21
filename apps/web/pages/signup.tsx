@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 import {
   Flex,
   useColorModeValue,
@@ -20,17 +21,18 @@ import {
 } from '@chakra-ui/react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { useFormik } from 'formik';
-import { useSignupMutation } from 'dad-gql';
 import Layout from '../components/layout';
 import { signupSchema } from '../utils/formValidation';
-import { useRouter } from 'next/router';
+import { AuthContext } from '../context/auth';
 
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const toast = useToast();
+  const {
+    authContext: { signup }
+  } = useContext(AuthContext);
 
-  const [, signup] = useSignupMutation();
   const { handleSubmit, handleChange, values, isSubmitting, errors } =
     useFormik({
       initialValues: {
@@ -41,20 +43,20 @@ export default function SignUp() {
         confirmPassword: ''
       },
       validationSchema: signupSchema,
-      onSubmit: async (values, { setSubmitting, setErrors }) => {
+      onSubmit: async (values, { setSubmitting }) => {
         const { confirmPassword, ...user } = values;
-        const res = await signup({ user });
+        const res = await signup(user);
 
-        if (res.data?.signup.errors) {
+        if (!res.ok) {
           toast({
             title: 'Signup unsuccessful',
-            description: `There was an error signing up: ${res.data.signup.errors[0].message}`,
+            description: `There was an error signing up: ${res.errors}`,
             status: 'error',
             duration: 9000,
             isClosable: true
           });
           setSubmitting(false);
-        } else if (res.data?.signup.user) {
+        } else if (res.ok) {
           toast({
             title: 'Signup Successful',
             description: 'You have successfully signed up!',
@@ -128,6 +130,7 @@ export default function SignUp() {
                     name='email'
                     value={values.email}
                     onChange={handleChange}
+                    autoComplete='off'
                   />
                   {errors.email ? (
                     <FormErrorMessage>{errors.email}</FormErrorMessage>

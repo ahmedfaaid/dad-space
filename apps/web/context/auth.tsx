@@ -11,6 +11,7 @@ const AuthContext = createContext<AuthState>(null);
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [, login] = useLoginMutation();
+  const [, signup] = useSignupMutation();
 
   const authContext = useMemo(
     () => ({
@@ -22,6 +23,17 @@ const AuthProvider = ({ children }) => {
           return { ok: false, errors: res.data.login.errors[0].message };
         } else if (res.data?.login.user) {
           setUser(res.data.login.user);
+          return { ok: true };
+        }
+      },
+      signup: async data => {
+        const res = await signup({ user: data });
+
+        if (res.data?.signup.errors) {
+          setUser(null);
+          return { ok: false, errors: res.data.signup.errors[0].message };
+        } else if (res.data?.signup.user) {
+          setUser(res.data.signup.user);
           return { ok: true };
         }
       }
