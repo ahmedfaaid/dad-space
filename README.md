@@ -26,11 +26,11 @@ Dads unite!
 ### Client
 
 - [x] Signup page
-- [ ] Login page
+- [x] Login page
 - [ ] API integration
   - [x] Signup
-  - [ ] Login
+  - [x] Login
   - [x] Logout
   - [ ] Post creation
   - [ ] Comment on post
-- [ ] Auth state
+- [x] Auth state
