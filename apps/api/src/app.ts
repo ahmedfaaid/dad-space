@@ -57,7 +57,7 @@ const main = async () => {
       emitSchemaFile: path.resolve(__dirname, 'schema.gql'),
       validate: false
     }),
-    context: ({ req, res }) => ({ req, res }),
+    context: ({ req, res }) => ({ req, res, redis }),
     plugins: [ApolloServerPluginLandingPageGraphQLPlayground]
   });
 
