@@ -8,10 +8,11 @@ Dads unite!
 
 ### API
 
-- [x] Auth flow
+- [ ] Auth flow
   - [x] Login
   - [x] Sign Up
   - [x] Logout
+  - [ ] Forgot Password
 - [x] Post creation
 - [ ] Topic creation
 - [x] Comment creation
@@ -34,6 +35,7 @@ Dads unite!
   - [x] Logout
   - [ ] Post creation
   - [ ] Comment on post
+  - [ ] Forgot Password
 - [x] Auth state
 - [ ] Profile page
 - [ ] Explore topics page
