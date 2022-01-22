@@ -11,7 +11,8 @@ export default function FeaturedPosts() {
       postedBy: 'Ahmed Alhassan',
       createdAt: '2 days ago',
       ups: '12.1k',
-      comments: 65
+      comments: 65,
+      topic: 'Love'
     },
     {
       id: 2,
@@ -20,7 +21,8 @@ export default function FeaturedPosts() {
       postedBy: 'Ahmed Alhassan',
       createdAt: '2 days ago',
       ups: '12.1k',
-      comments: 65
+      comments: 65,
+      topic: 'Discipline'
     },
     {
       id: 3,
@@ -29,7 +31,8 @@ export default function FeaturedPosts() {
       postedBy: 'Ahmed Alhassan',
       createdAt: '2 days ago',
       ups: '12.1k',
-      comments: 65
+      comments: 65,
+      topic: 'Love'
     }
   ];
 

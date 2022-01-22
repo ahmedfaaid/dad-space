@@ -19,6 +19,7 @@ interface FeaturedPostProps {
   createdAt: string;
   ups: string;
   comments: number;
+  topic: string;
 }
 
 export default function FeaturedPost({
@@ -28,7 +29,8 @@ export default function FeaturedPost({
   postedBy,
   createdAt,
   ups,
-  comments
+  comments,
+  topic
 }: FeaturedPostProps) {
   return (
     <Flex
@@ -61,6 +63,21 @@ export default function FeaturedPost({
           cursor='pointer'
         />
       </Box>
+      <Flex
+        minW='70px'
+        h='25px'
+        position='absolute'
+        top='10px'
+        right='10px'
+        justify='center'
+        align='center'
+        border='1px'
+        borderColor='star-command-blue'
+      >
+        <Text fontSize='sm' color='star-command-blue'>
+          {topic}
+        </Text>
+      </Flex>
       <Box width='80%' mx='auto'>
         <Box>
           <Heading as='h2' size='sm' mb={2} color='black'>
