@@ -34,8 +34,10 @@ type Error {
 type Mutation {
   createComment(comment: CommentInput!): Comment!
   createPost(post: PostInput!): Post!
+  forgotPassword(email: String!): Boolean!
   login(email: String!, password: String!): UserResponse
   logout: Boolean!
+  resetPassword(newPassword: String!, token: String!): UserResponse!
   signup(user: UserInput!): UserResponse
 }
 

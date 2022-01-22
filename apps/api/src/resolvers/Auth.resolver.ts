@@ -1,8 +1,10 @@
 import { getRepository } from 'typeorm';
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import * as argon2 from 'argon2';
+import { v4 as uuidv4 } from 'uuid';
 import { User, UserInput, UserResponse } from '../entities/User.entity';
 import { Context } from '../types/Context';
+import { email as sendEmail } from '../utils/email';
 
 @Resolver()
 export class AuthResolver {
@@ -91,5 +93,97 @@ export class AuthResolver {
         return resolve(true);
       })
     );
+  }
+
+  @Mutation(() => Boolean)
+  async forgotPassword(
+    @Arg('email') email: string,
+    @Ctx() ctx: Context
+  ): Promise<boolean> {
+    const userRepository = getRepository(User);
+
+    const user = await userRepository.findOne({ where: { email } });
+
+    if (!user) {
+      return true;
+    }
+
+    const resetToken = uuidv4();
+
+    await ctx.redis.set(
+      `forgot-password:${resetToken}`,
+      user.id,
+      'ex',
+      1000 * 60 * 60 * 24 * 7
+    ); // Expires in 7 days
+
+    await sendEmail(
+      email,
+      'Reset your password',
+      `<a href="http://localhost:3000/reset-password/${resetToken}">Reset your password</a>`
+    );
+
+    return true;
+  }
+
+  @Mutation(() => UserResponse)
+  async resetPassword(
+    @Arg('token') token: string,
+    @Arg('newPassword') newPassword: string,
+    @Ctx() ctx: Context
+  ): Promise<UserResponse> {
+    const userRepository = getRepository(User);
+
+    try {
+      const userId = await ctx.redis.get(`forgot-password:${token}`);
+
+      if (!userId) {
+        return {
+          errors: [
+            {
+              path: 'resetPassword',
+              message: 'Invalid token'
+            }
+          ]
+        };
+      }
+
+      // Redis stores the userId as a string, so we need to convert it to a number
+      const userIdToNumber = parseInt(userId);
+
+      const user = await userRepository.findOneOrFail(userIdToNumber);
+
+      if (!user) {
+        return {
+          errors: [
+            {
+              path: 'resetPassword',
+              message: 'User not found'
+            }
+          ]
+        };
+      }
+
+      const hashedPassword = await argon2.hash(newPassword);
+
+      // Update the user's password
+      const updatedUser = await userRepository.save({
+        ...user,
+        password: hashedPassword
+      });
+
+      await ctx.redis.del(`forgot-password:${token}`);
+
+      return { user: updatedUser };
+    } catch (error) {
+      return {
+        errors: [
+          {
+            path: 'resetPassword',
+            message: 'Invalid token'
+          }
+        ]
+      };
+    }
   }
 }
