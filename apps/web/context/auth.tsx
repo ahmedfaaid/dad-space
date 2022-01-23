@@ -3,7 +3,9 @@ import {
   useLoginMutation,
   useLogoutMutation,
   useSignupMutation,
-  useMeQuery
+  useMeQuery,
+  useForgotPasswordMutation,
+  useResetPasswordMutation
 } from 'dad-gql';
 import { User, AuthState } from '../types';
 
@@ -15,6 +17,8 @@ const AuthProvider = ({ children }) => {
   const [, login] = useLoginMutation();
   const [, signup] = useSignupMutation();
   const [, logout] = useLogoutMutation();
+  const [, forgotPassword] = useForgotPasswordMutation();
+  const [, resetPassword] = useResetPasswordMutation();
 
   useEffect(() => {
     if (data?.me) {
@@ -51,6 +55,25 @@ const AuthProvider = ({ children }) => {
       logout: async () => {
         setUser(null);
         await logout();
+      },
+      forgotPassword: async email => {
+        await forgotPassword(email);
+
+        return { ok: true };
+      },
+      resetPassword: async data => {
+        const res = await resetPassword(data);
+
+        if (res.data?.resetPassword.errors) {
+          setUser(null);
+          return {
+            ok: false,
+            errors: res.data.resetPassword.errors[0].message
+          };
+        } else if (res.data?.resetPassword.user) {
+          setUser(res.data.resetPassword.user);
+          return { ok: true };
+        }
       }
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
