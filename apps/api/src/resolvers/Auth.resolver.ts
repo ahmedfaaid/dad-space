@@ -148,10 +148,7 @@ export class AuthResolver {
         };
       }
 
-      // Redis stores the userId as a string, so we need to convert it to a number
-      const userIdToNumber = parseInt(userId);
-
-      const user = await userRepository.findOneOrFail(userIdToNumber);
+      const user = await userRepository.findOneOrFail(userId);
 
       if (!user) {
         return {
