@@ -3,6 +3,7 @@ import {
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
+  UpdateDateColumn,
   ManyToOne,
   JoinColumn,
   OneToMany
@@ -46,7 +47,7 @@ export class Post {
   createdAt: Date;
 
   @Field()
-  @CreateDateColumn()
+  @UpdateDateColumn()
   updatedAt: Date;
 }
 

@@ -3,6 +3,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  UpdateDateColumn,
   OneToMany,
   ManyToMany
 } from 'typeorm';
@@ -51,7 +52,7 @@ export class User {
   createdAt: Date;
 
   @Field()
-  @CreateDateColumn()
+  @UpdateDateColumn()
   updatedAt: Date;
 }
 
