@@ -1,0 +1,21 @@
+query Posts($skip: Int!, $limit: Int!) {
+  posts(skip: $skip, limit: $limit) {
+    id
+    headline
+    text
+    topic {
+      id
+      name
+      description
+    }
+    postedBy {
+      id
+      firstName
+      lastName
+      email
+    }
+    comments {
+      id
+    }
+  }
+}

@@ -124,6 +124,12 @@ export type QueryPostArgs = {
   id: Scalars['String'];
 };
 
+
+export type QueryPostsArgs = {
+  limit: Scalars['Int'];
+  skip: Scalars['Int'];
+};
+
 export type Topic = {
   __typename?: 'Topic';
   createdAt: Scalars['DateTime'];
@@ -204,6 +210,14 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: string, email: string, firstName: string, lastName: string } | null | undefined };
+
+export type PostsQueryVariables = Exact<{
+  skip: Scalars['Int'];
+  limit: Scalars['Int'];
+}>;
+
+
+export type PostsQuery = { __typename?: 'Query', posts: Array<{ __typename?: 'Post', id: string, headline: string, text: string, topic: { __typename?: 'Topic', id: string, name: string, description: string }, postedBy: { __typename?: 'User', id: string, firstName: string, lastName: string, email: string }, comments: Array<{ __typename?: 'Comment', id: string }> }> };
 
 export const ErrorFragmentFragmentDoc = gql`
     fragment ErrorFragment on Error {
@@ -308,4 +322,31 @@ export const MeDocument = gql`
 
 export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
+};
+export const PostsDocument = gql`
+    query Posts($skip: Int!, $limit: Int!) {
+  posts(skip: $skip, limit: $limit) {
+    id
+    headline
+    text
+    topic {
+      id
+      name
+      description
+    }
+    postedBy {
+      id
+      firstName
+      lastName
+      email
+    }
+    comments {
+      id
+    }
+  }
+}
+    `;
+
+export function usePostsQuery(options: Omit<Urql.UseQueryArgs<PostsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<PostsQuery>({ query: PostsDocument, ...options });
 };
