@@ -15,7 +15,10 @@ Dads unite!
   - [ ] Post
   - [ ] Comment
 - [ ] Allow upvoting/downvoting on posts
-- [ ] Query most popular posts
+- [ ] Querying posts
+  - [ ] Pagination
+  - [ ] Ordering
+  - [ ] Filtering
 
 ### Client
 
