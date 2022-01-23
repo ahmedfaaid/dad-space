@@ -2,7 +2,8 @@ export type User = {
   id: string;
   firstName: string;
   lastName: string;
-  email: string;
+  email?: string;
+  createdAt?: Date;
 };
 
 export type AuthState = {
@@ -20,9 +21,9 @@ export type Post = {
 };
 
 export type Topic = {
-  id: string;
+  id?: string;
   name: string;
-  description: string;
+  description?: string;
 };
 
 export type Comment = {
