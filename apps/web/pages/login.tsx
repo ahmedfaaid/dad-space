@@ -124,6 +124,11 @@ export default function Login() {
                     <FormErrorMessage>{errors.password}</FormErrorMessage>
                   ) : null}
                 </FormControl>
+                <Flex mt={2}>
+                  <NextLink href='/forgot-password' passHref>
+                    <Link ml='auto'>Forgot password?</Link>
+                  </NextLink>
+                </Flex>
                 <Stack spacing={10} pt={2}>
                   <Button
                     loadingText='Submitting'
