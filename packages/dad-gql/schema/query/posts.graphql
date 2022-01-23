@@ -3,16 +3,14 @@ query Posts($skip: Int!, $limit: Int!) {
     id
     headline
     text
+    createdAt
     topic {
-      id
       name
-      description
     }
     postedBy {
       id
       firstName
       lastName
-      email
     }
     comments {
       id

@@ -217,7 +217,7 @@ export type PostsQueryVariables = Exact<{
 }>;
 
 
-export type PostsQuery = { __typename?: 'Query', posts: Array<{ __typename?: 'Post', id: string, headline: string, text: string, topic: { __typename?: 'Topic', id: string, name: string, description: string }, postedBy: { __typename?: 'User', id: string, firstName: string, lastName: string, email: string }, comments: Array<{ __typename?: 'Comment', id: string }> }> };
+export type PostsQuery = { __typename?: 'Query', posts: Array<{ __typename?: 'Post', id: string, headline: string, text: string, createdAt: any, topic: { __typename?: 'Topic', name: string }, postedBy: { __typename?: 'User', id: string, firstName: string, lastName: string }, comments: Array<{ __typename?: 'Comment', id: string }> }> };
 
 export const ErrorFragmentFragmentDoc = gql`
     fragment ErrorFragment on Error {
@@ -329,16 +329,14 @@ export const PostsDocument = gql`
     id
     headline
     text
+    createdAt
     topic {
-      id
       name
-      description
     }
     postedBy {
       id
       firstName
       lastName
-      email
     }
     comments {
       id
