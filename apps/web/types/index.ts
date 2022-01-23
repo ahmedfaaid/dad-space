@@ -18,6 +18,7 @@ export type Post = {
   topic: Topic;
   postedBy: User;
   comments: Comment[];
+  createdAt?: Date;
 };
 
 export type Topic = {
