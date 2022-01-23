@@ -27,6 +27,13 @@ export default function Navbar() {
   } = useContext(AuthContext);
   const router = useRouter();
 
+  const handleLogout = async () => {
+    await logout();
+    if (router.pathname !== '/') {
+      router.push('/');
+    }
+  };
+
   let showBtnsOrAvatar;
 
   if (user) {
@@ -45,18 +52,7 @@ export default function Navbar() {
           <MenuList>
             <MenuItem>Profile</MenuItem>
             <MenuItem>Settings</MenuItem>
-            <MenuItem
-              onClick={() => {
-                logout();
-                if (router.pathname === '/') {
-                  router.reload();
-                } else {
-                  router.push('/');
-                }
-              }}
-            >
-              Logout
-            </MenuItem>
+            <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
           </MenuList>
         </Menu>
       </>
