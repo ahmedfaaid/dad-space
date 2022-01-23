@@ -174,6 +174,8 @@ export class AuthResolver {
 
       await ctx.redis.del(`forgot-password:${token}`);
 
+      ctx.req.session.userId = updatedUser.id;
+
       return { user: updatedUser };
     } catch (error) {
       return {
