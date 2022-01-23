@@ -46,8 +46,10 @@ export type Mutation = {
   __typename?: 'Mutation';
   createComment: Comment;
   createPost: Post;
+  forgotPassword: Scalars['Boolean'];
   login?: Maybe<UserResponse>;
   logout: Scalars['Boolean'];
+  resetPassword: UserResponse;
   signup?: Maybe<UserResponse>;
 };
 
@@ -62,9 +64,20 @@ export type MutationCreatePostArgs = {
 };
 
 
+export type MutationForgotPasswordArgs = {
+  email: Scalars['String'];
+};
+
+
 export type MutationLoginArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
+};
+
+
+export type MutationResetPasswordArgs = {
+  newPassword: Scalars['String'];
+  token: Scalars['String'];
 };
 
 
@@ -148,6 +161,17 @@ export type UserResponse = {
   user?: Maybe<User>;
 };
 
+export type ErrorFragmentFragment = { __typename?: 'Error', path: string, message: string };
+
+export type UserFragmentFragment = { __typename?: 'User', id: string, firstName: string, lastName: string, email: string };
+
+export type ForgotPasswordMutationVariables = Exact<{
+  email: Scalars['String'];
+}>;
+
+
+export type ForgotPasswordMutation = { __typename?: 'Mutation', forgotPassword: boolean };
+
 export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
@@ -161,6 +185,14 @@ export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
 export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
 
+export type ResetPasswordMutationVariables = Exact<{
+  newPassword: Scalars['String'];
+  token: Scalars['String'];
+}>;
+
+
+export type ResetPasswordMutation = { __typename?: 'Mutation', resetPassword: { __typename?: 'UserResponse', user?: { __typename?: 'User', id: string, firstName: string, lastName: string, email: string } | null | undefined, errors?: Array<{ __typename?: 'Error', path: string, message: string }> | null | undefined } };
+
 export type SignupMutationVariables = Exact<{
   user: UserInput;
 }>;
@@ -173,7 +205,29 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: string, email: string, firstName: string, lastName: string } | null | undefined };
 
+export const ErrorFragmentFragmentDoc = gql`
+    fragment ErrorFragment on Error {
+  path
+  message
+}
+    `;
+export const UserFragmentFragmentDoc = gql`
+    fragment UserFragment on User {
+  id
+  firstName
+  lastName
+  email
+}
+    `;
+export const ForgotPasswordDocument = gql`
+    mutation ForgotPassword($email: String!) {
+  forgotPassword(email: $email)
+}
+    `;
 
+export function useForgotPasswordMutation() {
+  return Urql.useMutation<ForgotPasswordMutation, ForgotPasswordMutationVariables>(ForgotPasswordDocument);
+};
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {
@@ -202,6 +256,23 @@ export const LogoutDocument = gql`
 
 export function useLogoutMutation() {
   return Urql.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument);
+};
+export const ResetPasswordDocument = gql`
+    mutation ResetPassword($newPassword: String!, $token: String!) {
+  resetPassword(newPassword: $newPassword, token: $token) {
+    user {
+      ...UserFragment
+    }
+    errors {
+      ...ErrorFragment
+    }
+  }
+}
+    ${UserFragmentFragmentDoc}
+${ErrorFragmentFragmentDoc}`;
+
+export function useResetPasswordMutation() {
+  return Urql.useMutation<ResetPasswordMutation, ResetPasswordMutationVariables>(ResetPasswordDocument);
 };
 export const SignupDocument = gql`
     mutation Signup($user: UserInput!) {
