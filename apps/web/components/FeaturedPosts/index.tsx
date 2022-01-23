@@ -1,46 +1,28 @@
-import { Box } from '@chakra-ui/react';
-
+import { Box, Flex, Spinner } from '@chakra-ui/react';
+import { usePostsQuery } from 'dad-gql';
 import FeaturedPost from '../FeaturedPost';
 
 export default function FeaturedPosts() {
-  const posts = [
-    {
-      id: 1,
-      headline: 'Lorem Ipsum',
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam turpis velit, tempor a quam at, volutpat rutrum lorem. Sed risus tellus, malesuada vel ornare quis, sodales vitae arcu. Nullam a lacinia turpis, sed fermentum ante. Aenean non sem hendrerit, consequat odio id, venenatis justo. Fusce dictum sodales sapien, non dapibus turpis fringilla sit amet. Nullam elit mauris, tincidunt non urna ut, mollis bibendum eros. Quisque mattis interdum justo, at gravida felis cursus non. Morbi nec massa suscipit, facilisis massa in, finibus urna. In dictum enim metus, nec sagittis ligula laoreet tempor.',
-      postedBy: 'Ahmed Alhassan',
-      createdAt: '2 days ago',
-      ups: '12.1k',
-      comments: 65,
-      topic: 'Love'
-    },
-    {
-      id: 2,
-      headline: 'Lorem Ipsum',
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam turpis velit, tempor a quam at, volutpat rutrum lorem. Sed risus tellus, malesuada vel ornare quis, sodales vitae arcu. Nullam a lacinia turpis, sed fermentum ante. Aenean non sem hendrerit, consequat odio id, venenatis justo. Fusce dictum sodales sapien, non dapibus turpis fringilla sit amet. Nullam elit mauris, tincidunt non urna ut, mollis bibendum eros. Quisque mattis interdum justo, at gravida felis cursus non. Morbi nec massa suscipit, facilisis massa in, finibus urna. In dictum enim metus, nec sagittis ligula laoreet tempor.',
-      postedBy: 'Ahmed Alhassan',
-      createdAt: '2 days ago',
-      ups: '12.1k',
-      comments: 65,
-      topic: 'Discipline'
-    },
-    {
-      id: 3,
-      headline: 'Lorem Ipsum',
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam turpis velit, tempor a quam at, volutpat rutrum lorem. Sed risus tellus, malesuada vel ornare quis, sodales vitae arcu. Nullam a lacinia turpis, sed fermentum ante. Aenean non sem hendrerit, consequat odio id, venenatis justo. Fusce dictum sodales sapien, non dapibus turpis fringilla sit amet. Nullam elit mauris, tincidunt non urna ut, mollis bibendum eros. Quisque mattis interdum justo, at gravida felis cursus non. Morbi nec massa suscipit, facilisis massa in, finibus urna. In dictum enim metus, nec sagittis ligula laoreet tempor.',
-      postedBy: 'Ahmed Alhassan',
-      createdAt: '2 days ago',
-      ups: '12.1k',
-      comments: 65,
-      topic: 'Love'
+  const [{ data, fetching }] = usePostsQuery({
+    variables: {
+      limit: 20,
+      skip: 0
     }
-  ];
+  });
 
   return (
-    <Box>
-      {posts.map(post => (
-        <FeaturedPost key={post.id} {...post} />
-      ))}
-    </Box>
+    <>
+      {fetching ? (
+        <Flex align='center' justify='center'>
+          <Spinner />
+        </Flex>
+      ) : (
+        <Box>
+          {data?.posts.map(post => (
+            <FeaturedPost key={post.id} post={post} />
+          ))}
+        </Box>
+      )}
+    </>
   );
 }

@@ -10,28 +10,13 @@ import {
 } from '@chakra-ui/react';
 import { ChatIcon } from '@chakra-ui/icons';
 import { ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons';
+import { Post } from '../../types';
 
 interface FeaturedPostProps {
-  id: number;
-  headline: string;
-  text: string;
-  postedBy: string;
-  createdAt: string;
-  ups: string;
-  comments: number;
-  topic: string;
+  post: Post;
 }
 
-export default function FeaturedPost({
-  id,
-  headline,
-  text,
-  postedBy,
-  createdAt,
-  ups,
-  comments,
-  topic
-}: FeaturedPostProps) {
+export default function FeaturedPost({ post }: FeaturedPostProps) {
   return (
     <Flex
       px={8}
@@ -55,7 +40,7 @@ export default function FeaturedPost({
           _hover={{ color: 'star-command-blue' }}
           cursor='pointer'
         />
-        <Text color='star-command-blue'>{ups}</Text>
+        <Text color='star-command-blue'>12K</Text>
         <ChevronDownIcon
           w={6}
           h={6}
@@ -75,15 +60,15 @@ export default function FeaturedPost({
         borderColor='star-command-blue'
       >
         <Text fontSize='sm' color='star-command-blue'>
-          {topic}
+          {post.topic.name}
         </Text>
       </Flex>
       <Box width='80%' mx='auto'>
         <Box>
           <Heading as='h2' size='sm' mb={2} color='black'>
-            {headline}
+            {post.headline}
           </Heading>
-          <Text fontSize='xs'>{text.substring(0, 500)}...</Text>
+          <Text fontSize='xs'>{post.text.substring(0, 500)}...</Text>
         </Box>
         <Divider my={4} />
         <Grid templateColumns='repeat(3, 1fr)'>
@@ -92,16 +77,18 @@ export default function FeaturedPost({
             <Text ml={2} fontSize='xs'>
               Posted by{' '}
               <Link color='star-command-blue' fontSize='xs'>
-                {postedBy}
+                {post.postedBy.firstName} {post.postedBy.lastName}
               </Link>
             </Text>
           </Flex>
           <Text justifySelf='center' fontSize='xs'>
-            {createdAt}
+            {post.createdAt}
           </Text>
           <Flex align='center' justifySelf='end'>
             <ChatIcon w={3} h={3} mr={2} />
-            <Text fontSize='xs'>{comments > 50 ? '50+' : comments}</Text>
+            <Text fontSize='xs'>
+              {post.comments.length > 50 ? '50+' : post.comments.length}
+            </Text>
           </Flex>
         </Grid>
       </Box>
