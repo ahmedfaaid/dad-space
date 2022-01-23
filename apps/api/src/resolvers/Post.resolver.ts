@@ -16,11 +16,18 @@ import { Context } from '../types/Context';
 @Resolver()
 export class PostResolver {
   @Query(() => [Post])
-  async posts(): Promise<Post[]> {
+  async posts(
+    @Arg('limit') limit: number,
+    @Arg('skip') skip: number
+  ): Promise<Post[]> {
+    const take = limit | 20;
     const postRepository = getRepository(Post);
 
     return await postRepository.find({
-      relations: ['topic', 'postedBy', 'comments']
+      order: { createdAt: 'DESC' },
+      relations: ['topic', 'postedBy', 'comments'],
+      take,
+      skip
     });
   }
 
