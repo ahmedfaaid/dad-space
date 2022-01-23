@@ -1,4 +1,4 @@
-fragment ErrorFragment on FieldError {
+fragment ErrorFragment on Error {
   path
   message
 }
