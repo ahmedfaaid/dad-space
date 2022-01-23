@@ -6,6 +6,7 @@
   "password": "postgres",
   "database": "dad-space",
   "entities": ["src/entities/*.ts"],
+  "migrations": ["src/migrations/*.ts"],
   "synchronize": true,
   "logging": true
 }

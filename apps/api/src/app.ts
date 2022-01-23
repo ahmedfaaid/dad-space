@@ -51,6 +51,8 @@ const main = async () => {
 
   const conn = await createConnection();
 
+  // await conn.runMigrations();
+
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
       resolvers: [UserResolver, PostResolver, CommentResolver, AuthResolver],
