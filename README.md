@@ -16,8 +16,9 @@ Dads unite!
   - [ ] Comment
 - [ ] Allow upvoting/downvoting on posts
 - [ ] Querying posts
-  - [ ] Pagination
+  - [x] Pagination
   - [ ] Ordering
+    - [ ] By most upvoted or commented
   - [ ] Filtering
 
 ### Client
