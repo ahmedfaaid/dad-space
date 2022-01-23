@@ -2,6 +2,7 @@ import { getRepository } from 'typeorm';
 import {
   Arg,
   Ctx,
+  Int,
   Mutation,
   Query,
   Resolver,
@@ -17,8 +18,8 @@ import { Context } from '../types/Context';
 export class PostResolver {
   @Query(() => [Post])
   async posts(
-    @Arg('limit') limit: number,
-    @Arg('skip') skip: number
+    @Arg('limit', () => Int) limit: number,
+    @Arg('skip', () => Int) skip: number
   ): Promise<Post[]> {
     const take = limit | 20;
     const postRepository = getRepository(Post);
