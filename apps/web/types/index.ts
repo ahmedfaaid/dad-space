@@ -9,3 +9,22 @@ export type AuthState = {
   authContext: any;
   user: User;
 };
+
+export type Post = {
+  id: string;
+  headline: string;
+  text: string;
+  topic: Topic;
+  postedBy: User;
+  comments: Comment[];
+};
+
+export type Topic = {
+  id: string;
+  name: string;
+  description: string;
+};
+
+export type Comment = {
+  id: string;
+};
