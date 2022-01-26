@@ -28,15 +28,15 @@ export class Topic {
   @Column()
   description: string;
 
-  @Field(() => [User])
+  @Field(() => [User], { nullable: true })
   @ManyToMany(() => User, user => user.moderates)
   @JoinTable()
-  moderators: User[];
+  moderators?: User[];
 
-  @Field(() => [Post])
+  @Field(() => [Post], { nullable: true })
   @OneToMany(() => Post, post => post.topic)
   @JoinColumn({ name: 'id' })
-  posts: Post[];
+  posts?: Post[];
 
   @Field()
   @CreateDateColumn()
