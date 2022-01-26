@@ -64,6 +64,7 @@ type Query {
   me: User
   post(id: String!): Post!
   posts(limit: Int!, skip: Int!): [Post!]!
+  topics(query: String): [Topic!]!
   user: User!
   users: [User!]!
 }
@@ -72,9 +73,9 @@ type Topic {
   createdAt: DateTime!
   description: String!
   id: ID!
-  moderators: [User!]!
+  moderators: [User!]
   name: String!
-  posts: [Post!]!
+  posts: [Post!]
   updatedAt: DateTime!
 }
 

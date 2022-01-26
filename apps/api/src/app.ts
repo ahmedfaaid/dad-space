@@ -15,6 +15,7 @@ import { UserResolver } from './resolvers/User.resolver';
 import { PostResolver } from './resolvers/Post.resolver';
 import { CommentResolver } from './resolvers/Comment.resolver';
 import { AuthResolver } from './resolvers/Auth.resolver';
+import { TopicResolver } from './resolvers/Topic.resolver';
 
 dotenv.config();
 
@@ -55,7 +56,13 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [UserResolver, PostResolver, CommentResolver, AuthResolver],
+      resolvers: [
+        UserResolver,
+        PostResolver,
+        CommentResolver,
+        AuthResolver,
+        TopicResolver
+      ],
       emitSchemaFile: path.resolve(__dirname, 'schema.gql'),
       validate: false
     }),
