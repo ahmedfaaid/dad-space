@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import {
   Box,
   Input,
@@ -12,10 +13,12 @@ import {
   useDisclosure
 } from '@chakra-ui/react';
 import { useTopicsQuery } from 'dad-gql';
+import { ModalContext } from '../../context/modal';
 
 export default function CreatePost() {
   const [{ data, fetching }] = useTopicsQuery();
-  const { isOpen, onClose } = useDisclosure();
+  // const { isOpen, onClose } = useDisclosure();
+  const { isOpen, onClose } = useContext(ModalContext);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
