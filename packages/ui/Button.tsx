@@ -3,6 +3,7 @@ import { Button } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 
 interface BtnProps {
+  as?: any;
   leftIcon?: any;
   bg: string;
   color: string;
@@ -12,6 +13,7 @@ interface BtnProps {
 }
 
 export const Btn = ({
+  as,
   leftIcon,
   bg,
   color,
@@ -21,6 +23,7 @@ export const Btn = ({
 }: BtnProps) => {
   return (
     <Button
+      as={as}
       leftIcon={leftIcon && leftIcon}
       bg={bg}
       color={color}
