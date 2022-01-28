@@ -11,6 +11,12 @@ export type AuthState = {
   user: User;
 };
 
+export type ModalState = {
+  isOpen: boolean;
+  onClose: () => void;
+  onOpen: () => void;
+};
+
 export type Post = {
   id: string;
   headline: string;
