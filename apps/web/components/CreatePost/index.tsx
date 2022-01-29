@@ -35,7 +35,7 @@ export default function CreatePost({ topic }) {
         }
       });
 
-      if (res.data?.createPost.errors.length > 0) {
+      if (res.data?.createPost.errors) {
         toast({
           title: 'Error creating post',
           description: `There was an error creating the post: ${res.data.createPost.errors}`,
