@@ -67,7 +67,7 @@ type Query {
   comment(id: String!): Comment!
   comments: [Comment!]!
   me: User
-  post(id: String!): Post!
+  post(id: String!): PostResponse!
   posts(limit: Int!, skip: Int!): [Post!]!
   topics(query: String): [Topic!]!
   user: User!

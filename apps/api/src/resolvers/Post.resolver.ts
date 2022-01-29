@@ -32,13 +32,37 @@ export class PostResolver {
     });
   }
 
-  @Query(() => Post)
-  async post(@Arg('id') id: string): Promise<Post> {
+  @Query(() => PostResponse)
+  async post(@Arg('id') id: string): Promise<PostResponse> {
     const postRepository = getRepository(Post);
 
-    return await postRepository.findOneOrFail(id, {
-      relations: ['topic', 'postedBy', 'comments']
-    });
+    try {
+      const post = await postRepository.findOne(id, {
+        relations: ['topic', 'postedBy', 'comments']
+      });
+
+      if (!post) {
+        return {
+          errors: [
+            {
+              path: 'post',
+              message: 'Post does not exist'
+            }
+          ]
+        };
+      }
+
+      return { post };
+    } catch (error) {
+      return {
+        errors: [
+          {
+            path: 'post',
+            message: 'There was an error retrieving the post'
+          }
+        ]
+      };
+    }
   }
 
   @UseMiddleware(isAuth)
