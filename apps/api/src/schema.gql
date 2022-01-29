@@ -33,7 +33,7 @@ type Error {
 
 type Mutation {
   createComment(comment: CommentInput!): Comment!
-  createPost(post: PostInput!): Post!
+  createPost(post: PostInput!): PostResponse!
   forgotPassword(email: String!): Boolean!
   login(email: String!, password: String!): UserResponse
   logout: Boolean!
@@ -56,6 +56,11 @@ input PostInput {
   headline: String!
   text: String!
   topicID: String!
+}
+
+type PostResponse {
+  errors: [Error!]
+  post: Post
 }
 
 type Query {

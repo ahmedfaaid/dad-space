@@ -12,6 +12,7 @@ import { ObjectType, Field, InputType, ID } from 'type-graphql';
 import { User } from './User.entity';
 import { Topic } from './Topic.entity';
 import { Comment } from './Comment.entity';
+import { Error } from './Error.entity';
 
 @Entity()
 @ObjectType()
@@ -49,6 +50,15 @@ export class Post {
   @Field()
   @UpdateDateColumn()
   updatedAt: Date;
+}
+
+@ObjectType()
+export class PostResponse {
+  @Field(() => Post, { nullable: true })
+  post?: Post;
+
+  @Field(() => [Error], { nullable: true })
+  errors?: Error[];
 }
 
 @InputType()

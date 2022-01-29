@@ -8,7 +8,7 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
-import { Post, PostInput } from '../entities/Post.entity';
+import { Post, PostInput, PostResponse } from '../entities/Post.entity';
 import { User } from '../entities/User.entity';
 import { Topic } from '../entities/Topic.entity';
 import { isAuth } from '../middleware/isAuth';
@@ -42,27 +42,64 @@ export class PostResolver {
   }
 
   @UseMiddleware(isAuth)
-  @Mutation(() => Post)
+  @Mutation(() => PostResponse)
   async createPost(
     @Arg('post') post: PostInput,
     @Ctx() ctx: Context
-  ): Promise<Post> {
+  ): Promise<PostResponse> {
     const postRepository = getRepository(Post);
     const userRepository = getRepository(User);
     const topicRepository = getRepository(Topic);
 
-    const postedBy = await userRepository.findOneOrFail(ctx.req.session.userId);
-    const topic = await topicRepository.findOneOrFail(post.topicID);
+    try {
+      const postedBy = await userRepository.findOne(ctx.req.session.userId);
+      const topic = await topicRepository.findOne(post.topicID);
 
-    const newPost = await postRepository.save({
-      ...post,
-      comments: [],
-      postedBy,
-      topic
-    });
+      if (!postedBy) {
+        return {
+          errors: [
+            {
+              path: 'createPost',
+              message: 'You must be logged in to create a post'
+            }
+          ]
+        };
+      }
 
-    return await postRepository.findOneOrFail(newPost.id, {
-      relations: ['topic', 'postedBy', 'comments']
-    });
+      if (!topic) {
+        return {
+          errors: [
+            {
+              path: 'createPost',
+              message: 'Topic does not exist'
+            }
+          ]
+        };
+      }
+
+      const newPost = await postRepository.save({
+        ...post,
+        comments: [],
+        postedBy,
+        topic
+      });
+
+      const postToReturn = await postRepository.findOneOrFail(newPost.id, {
+        relations: ['topic', 'postedBy', 'comments']
+      });
+
+      return {
+        post: postToReturn
+      };
+    } catch (error) {
+      return {
+        errors: [
+          {
+            path: 'createPost',
+            message: 'There was an error creating the post'
+          }
+        ]
+      };
+    }
   }
 }
