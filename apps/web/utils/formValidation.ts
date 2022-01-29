@@ -35,3 +35,10 @@ export const resetPasswordSchema = Yup.object({
     .required('Please confirm your password')
     .oneOf([Yup.ref('newPassword')], 'Passwords must match')
 });
+
+export const createPostSchema = Yup.object({
+  headline: Yup.string().required('Headline is required'),
+  text: Yup.string()
+    .max(500, 'Text must be less than 500 characters long')
+    .required('Text is required')
+});

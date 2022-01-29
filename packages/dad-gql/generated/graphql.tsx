@@ -45,7 +45,7 @@ export type Error = {
 export type Mutation = {
   __typename?: 'Mutation';
   createComment: Comment;
-  createPost: Post;
+  createPost: PostResponse;
   forgotPassword: Scalars['Boolean'];
   login?: Maybe<UserResponse>;
   logout: Scalars['Boolean'];
@@ -103,6 +103,12 @@ export type PostInput = {
   topicID: Scalars['String'];
 };
 
+export type PostResponse = {
+  __typename?: 'PostResponse';
+  errors?: Maybe<Array<Error>>;
+  post?: Maybe<Post>;
+};
+
 export type Query = {
   __typename?: 'Query';
   comment: Comment;
@@ -110,6 +116,7 @@ export type Query = {
   me?: Maybe<User>;
   post: Post;
   posts: Array<Post>;
+  topics: Array<Topic>;
   user: User;
   users: Array<User>;
 };
@@ -130,14 +137,19 @@ export type QueryPostsArgs = {
   skip: Scalars['Int'];
 };
 
+
+export type QueryTopicsArgs = {
+  query?: InputMaybe<Scalars['String']>;
+};
+
 export type Topic = {
   __typename?: 'Topic';
   createdAt: Scalars['DateTime'];
   description: Scalars['String'];
   id: Scalars['ID'];
-  moderators: Array<User>;
+  moderators?: Maybe<Array<User>>;
   name: Scalars['String'];
-  posts: Array<Post>;
+  posts?: Maybe<Array<Post>>;
   updatedAt: Scalars['DateTime'];
 };
 
@@ -170,6 +182,13 @@ export type UserResponse = {
 export type ErrorFragmentFragment = { __typename?: 'Error', path: string, message: string };
 
 export type UserFragmentFragment = { __typename?: 'User', id: string, firstName: string, lastName: string, email: string };
+
+export type CreatePostMutationVariables = Exact<{
+  post: PostInput;
+}>;
+
+
+export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'PostResponse', post?: { __typename?: 'Post', id: string, headline: string, text: string, topic: { __typename?: 'Topic', name: string } } | null | undefined, errors?: Array<{ __typename?: 'Error', path: string, message: string }> | null | undefined } };
 
 export type ForgotPasswordMutationVariables = Exact<{
   email: Scalars['String'];
@@ -219,6 +238,13 @@ export type PostsQueryVariables = Exact<{
 
 export type PostsQuery = { __typename?: 'Query', posts: Array<{ __typename?: 'Post', id: string, headline: string, text: string, createdAt: any, topic: { __typename?: 'Topic', name: string }, postedBy: { __typename?: 'User', id: string, firstName: string, lastName: string }, comments: Array<{ __typename?: 'Comment', id: string }> }> };
 
+export type TopicsQueryVariables = Exact<{
+  query?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type TopicsQuery = { __typename?: 'Query', topics: Array<{ __typename?: 'Topic', id: string, name: string }> };
+
 export const ErrorFragmentFragmentDoc = gql`
     fragment ErrorFragment on Error {
   path
@@ -233,6 +259,28 @@ export const UserFragmentFragmentDoc = gql`
   email
 }
     `;
+export const CreatePostDocument = gql`
+    mutation CreatePost($post: PostInput!) {
+  createPost(post: $post) {
+    post {
+      id
+      headline
+      text
+      topic {
+        name
+      }
+    }
+    errors {
+      path
+      message
+    }
+  }
+}
+    `;
+
+export function useCreatePostMutation() {
+  return Urql.useMutation<CreatePostMutation, CreatePostMutationVariables>(CreatePostDocument);
+};
 export const ForgotPasswordDocument = gql`
     mutation ForgotPassword($email: String!) {
   forgotPassword(email: $email)
@@ -347,4 +395,16 @@ export const PostsDocument = gql`
 
 export function usePostsQuery(options: Omit<Urql.UseQueryArgs<PostsQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<PostsQuery>({ query: PostsDocument, ...options });
+};
+export const TopicsDocument = gql`
+    query Topics($query: String) {
+  topics(query: $query) {
+    id
+    name
+  }
+}
+    `;
+
+export function useTopicsQuery(options: Omit<Urql.UseQueryArgs<TopicsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<TopicsQuery>({ query: TopicsDocument, ...options });
 };

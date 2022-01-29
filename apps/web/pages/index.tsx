@@ -1,6 +1,7 @@
-import { Grid, GridItem } from '@chakra-ui/react';
+import { useContext } from 'react';
+import NextLink from 'next/link';
+import { Grid, GridItem, Button } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
-import { Btn } from 'ui';
 
 import Layout from '../components/layout';
 import SideMenu from '../components/SideMenu';
@@ -17,14 +18,18 @@ export default function Home() {
           <FeaturedPosts />
         </GridItem>
         <GridItem>
-          <Btn
-            leftIcon={<AddIcon w={3} h={3} />}
-            bg='star-command-blue'
-            color='white'
-            width='100%'
-            hoverBg='navy-blue'
-            text='Start a new post'
-          />
+          <NextLink href='/posts/create'>
+            <Button
+              as='a'
+              leftIcon={<AddIcon w={3} h={3} />}
+              bg='star-command-blue'
+              color='white'
+              width='100%'
+              _hover={{ bg: 'navy-blue' }}
+            >
+              Start a new post
+            </Button>
+          </NextLink>
           <TopTopics />
           <AdditionalLinks />
         </GridItem>
