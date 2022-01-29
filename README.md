@@ -13,6 +13,7 @@ Dads unite!
   - [ ] User
   - [ ] Topic
   - [ ] Post
+    - [x] Create Post
   - [ ] Comment
 - [ ] Allow upvoting/downvoting on posts
 - [ ] Querying posts
@@ -24,7 +25,7 @@ Dads unite!
 ### Client
 
 - [ ] API integration
-  - [ ] Post creation
+  - [x] Post creation
   - [ ] Comment on post
 - [ ] Profile page
 - [ ] Explore topics page
