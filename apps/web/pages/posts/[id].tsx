@@ -14,7 +14,7 @@ import {
   Textarea
 } from '@chakra-ui/react';
 import { ChatIcon, ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
-import { usePostQuery } from 'dad-gql';
+import { usePostQuery, usePostCommentsQuery } from 'dad-gql';
 import { useFormik } from 'formik';
 import Layout from '../../components/layout';
 import { AuthContext } from '../../context/auth';
@@ -26,12 +26,10 @@ export default function Post() {
   const [{ data, fetching }] = usePostQuery({
     variables: { id: id as string }
   });
-
-  const {
-    post: {
-      post: { id: postId, headline, text, topic, postedBy, comments, createdAt }
-    }
-  } = data;
+  const [{ data: commentData, fetching: commentFetching }] =
+    usePostCommentsQuery({
+      variables: { postId: id as string }
+    });
 
   const { handleSubmit, handleChange, isSubmitting } = useFormik({
     initialValues: {
@@ -97,6 +95,8 @@ export default function Post() {
     </Skeleton>
   );
 
+  const commentSkeleton = <Skeleton />;
+
   return (
     <Layout>
       <Box
@@ -120,11 +120,11 @@ export default function Post() {
             <Flex direction='column' minH='200px'>
               <Box mb={4}>
                 <Heading as='h2' size='lg' color='black'>
-                  {headline}
+                  {data.post.post.headline}
                 </Heading>
               </Box>
               <Box mb={4}>
-                <Text fontSize='md'>{text}</Text>
+                <Text fontSize='md'>{data.post.post.text}</Text>
               </Box>
               <Spacer />
               <Flex>
@@ -145,7 +145,9 @@ export default function Post() {
                 </Flex>
                 <Flex ml={4} align='center' justifySelf='end'>
                   <ChatIcon w={3} h={3} mr={2} />
-                  <Text fontSize='sm'>{comments.length} comments</Text>
+                  <Text fontSize='sm'>
+                    {data.post.post.comments.length} comments
+                  </Text>
                 </Flex>
                 <Flex ml={4} align='center'>
                   <Avatar
@@ -157,7 +159,8 @@ export default function Post() {
                   <Text ml={2} fontSize='sm'>
                     Posted by{' '}
                     <Link color='star-command-blue' fontSize='sm'>
-                      {postedBy.firstName} {postedBy.lastName}
+                      {data.post.post.postedBy.firstName}{' '}
+                      {data.post.post.postedBy.lastName}
                     </Link>
                   </Text>
                 </Flex>
@@ -194,20 +197,22 @@ export default function Post() {
                 </Flex>
               </form>
             </Box>
-            <Box mt={8}>
-              <Divider mb={4} />
-              {comments.length === 0 ? (
-                <Text>There are no comments. Be the first to comment.</Text>
-              ) : (
-                comments.map(comment => (
-                  <Box key={comment.id}>
-                    <Text>{comment.text}</Text>
-                  </Box>
-                ))
-              )}
-            </Box>
           </>
         )}
+        <Box mt={8}>
+          <Divider mb={4} />
+          {commentFetching ? (
+            commentSkeleton
+          ) : commentData.postComments.comments.length === 0 ? (
+            <Text>There are no comments. Be the first to comment.</Text>
+          ) : (
+            commentData.postComments.comments.map(comment => (
+              <Box key={comment.id}>
+                <Text>{comment.text}</Text>
+              </Box>
+            ))
+          )}
+        </Box>
       </Box>
     </Layout>
   );
