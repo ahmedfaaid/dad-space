@@ -66,9 +66,6 @@ export class CommentInput {
   text: string;
 
   @Field()
-  postedById: string;
-
-  @Field()
   postId: string;
 
   @Field({ nullable: true })
