@@ -21,6 +21,7 @@ Dads unite!
   - [ ] Ordering
     - [ ] By most upvoted or commented
   - [ ] Filtering
+- [ ] Fix User & Post responses
 
 ### Client
 
