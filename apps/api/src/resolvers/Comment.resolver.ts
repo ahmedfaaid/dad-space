@@ -1,5 +1,12 @@
 import { getRepository } from 'typeorm';
-import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
+import {
+  Arg,
+  Ctx,
+  Mutation,
+  Query,
+  Resolver,
+  UseMiddleware
+} from 'type-graphql';
 import {
   Comment,
   CommentInput,
@@ -8,6 +15,7 @@ import {
 import { User } from '../entities/User.entity';
 import { Post } from '../entities/Post.entity';
 import { Context } from '../types/Context';
+import { isAuth } from '../middleware/isAuth';
 
 @Resolver()
 export class CommentResolver {
@@ -29,6 +37,7 @@ export class CommentResolver {
     });
   }
 
+  @UseMiddleware(isAuth)
   @Mutation(() => CommentsResponse)
   async createComment(
     @Arg('comment') comment: CommentInput,
