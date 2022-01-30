@@ -38,9 +38,9 @@ export class Comment {
   @JoinColumn()
   parent?: Comment;
 
-  @Field(() => [Comment])
+  @Field(() => [Comment], { nullable: true })
   @OneToMany(() => Comment, comment => comment.parent, { cascade: true })
-  children: Comment[];
+  children?: Comment[];
 
   @Field()
   @CreateDateColumn()

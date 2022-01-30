@@ -44,7 +44,7 @@ export class PostResolver {
 
     try {
       const post = await postRepository.findOne(id, {
-        relations: ['topic', 'postedBy', 'comments']
+        relations: ['topic', 'postedBy', 'comments', 'comments.postedBy']
       });
 
       if (!post) {
@@ -57,6 +57,8 @@ export class PostResolver {
           ]
         };
       }
+
+      console.log(post);
 
       return { post };
     } catch (error) {
@@ -115,7 +117,7 @@ export class PostResolver {
       });
 
       const postToReturn = await postRepository.findOneOrFail(newPost.id, {
-        relations: ['topic', 'postedBy', 'comments']
+        relations: ['topic', 'postedBy', 'comments', 'comments.postedBy']
       });
 
       return {

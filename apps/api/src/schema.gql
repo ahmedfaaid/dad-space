@@ -4,7 +4,7 @@
 # -----------------------------------------------
 
 type Comment {
-  children: [Comment!]!
+  children: [Comment!]
   createdAt: DateTime!
   id: ID!
   parent: Comment
