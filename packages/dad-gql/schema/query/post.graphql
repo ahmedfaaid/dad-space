@@ -1,0 +1,33 @@
+query Post($id: String!) {
+  post(id: $id) {
+    post {
+      id
+      headline
+      text
+      topic {
+        id
+        name
+      }
+      postedBy {
+        id
+        firstName
+        lastName
+      }
+      comments {
+        id
+        text
+        postedBy {
+          id
+          firstName
+          lastName
+        }
+        createdAt
+      }
+      createdAt
+    }
+    errors {
+      path
+      message
+    }
+  }
+}

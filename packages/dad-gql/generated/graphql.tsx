@@ -114,7 +114,7 @@ export type Query = {
   comment: Comment;
   comments: Array<Comment>;
   me?: Maybe<User>;
-  post: Post;
+  post: PostResponse;
   posts: Array<Post>;
   topics: Array<Topic>;
   user: User;
@@ -229,6 +229,13 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: string, email: string, firstName: string, lastName: string } | null | undefined };
+
+export type PostQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type PostQuery = { __typename?: 'Query', post: { __typename?: 'PostResponse', post?: { __typename?: 'Post', id: string, headline: string, text: string, createdAt: any, topic: { __typename?: 'Topic', id: string, name: string }, postedBy: { __typename?: 'User', id: string, firstName: string, lastName: string }, comments: Array<{ __typename?: 'Comment', id: string, text: string, createdAt: any, postedBy: { __typename?: 'User', id: string, firstName: string, lastName: string } }> } | null | undefined, errors?: Array<{ __typename?: 'Error', path: string, message: string }> | null | undefined } };
 
 export type PostsQueryVariables = Exact<{
   skip: Scalars['Int'];
@@ -370,6 +377,45 @@ export const MeDocument = gql`
 
 export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
+};
+export const PostDocument = gql`
+    query Post($id: String!) {
+  post(id: $id) {
+    post {
+      id
+      headline
+      text
+      topic {
+        id
+        name
+      }
+      postedBy {
+        id
+        firstName
+        lastName
+      }
+      comments {
+        id
+        text
+        postedBy {
+          id
+          firstName
+          lastName
+        }
+        createdAt
+      }
+      createdAt
+    }
+    errors {
+      path
+      message
+    }
+  }
+}
+    `;
+
+export function usePostQuery(options: Omit<Urql.UseQueryArgs<PostQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<PostQuery>({ query: PostDocument, ...options });
 };
 export const PostsDocument = gql`
     query Posts($skip: Int!, $limit: Int!) {
