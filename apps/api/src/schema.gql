@@ -52,6 +52,11 @@ type Post {
   updatedAt: DateTime!
 }
 
+type PostCommentsResponse {
+  comments: [Comment!]
+  errors: [Error!]
+}
+
 input PostInput {
   headline: String!
   text: String!
@@ -68,6 +73,7 @@ type Query {
   comments: [Comment!]!
   me: User
   post(id: String!): PostResponse!
+  postComments(postID: String!): PostCommentsResponse!
   posts(limit: Int!, skip: Int!): [Post!]!
   topics(query: String): [Topic!]!
   user: User!

@@ -8,9 +8,15 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
-import { Post, PostInput, PostResponse } from '../entities/Post.entity';
+import {
+  Post,
+  PostCommentsResponse,
+  PostInput,
+  PostResponse
+} from '../entities/Post.entity';
 import { User } from '../entities/User.entity';
 import { Topic } from '../entities/Topic.entity';
+import { Comment } from '../entities/Comment.entity';
 import { isAuth } from '../middleware/isAuth';
 import { Context } from '../types/Context';
 
@@ -121,6 +127,45 @@ export class PostResolver {
           {
             path: 'createPost',
             message: 'There was an error creating the post'
+          }
+        ]
+      };
+    }
+  }
+
+  @Query(() => PostCommentsResponse)
+  async postComments(
+    @Arg('postID') postID: string
+  ): Promise<PostCommentsResponse> {
+    const postRepository = getRepository(Post);
+    const commentRepository = getRepository(Comment);
+
+    try {
+      const post = await postRepository.findOne(postID);
+
+      if (!post) {
+        return {
+          errors: [
+            {
+              path: 'postComments',
+              message: 'Post does not exist'
+            }
+          ]
+        };
+      }
+
+      const comments = await commentRepository.find({
+        where: { post },
+        relations: ['postedBy', 'post', 'parent', 'children']
+      });
+
+      return { comments };
+    } catch (error) {
+      return {
+        errors: [
+          {
+            path: 'postComments',
+            message: 'There was an error retrieving the comments'
           }
         ]
       };

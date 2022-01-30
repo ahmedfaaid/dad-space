@@ -61,6 +61,15 @@ export class PostResponse {
   errors?: Error[];
 }
 
+@ObjectType()
+export class PostCommentsResponse {
+  @Field(() => [Comment], { nullable: true })
+  comments?: Comment[];
+
+  @Field(() => [Error], { nullable: true })
+  errors?: Error[];
+}
+
 @InputType()
 export class PostInput {
   @Field()
