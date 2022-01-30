@@ -11,6 +11,7 @@ import {
 import { ObjectType, Field, InputType, ID } from 'type-graphql';
 import { User } from './User.entity';
 import { Post } from './Post.entity';
+import { Error } from './Error.entity';
 
 @Entity()
 @ObjectType()
@@ -48,6 +49,15 @@ export class Comment {
   @Field()
   @UpdateDateColumn()
   updatedAt: Date;
+}
+
+@ObjectType()
+export class CommentsResponse {
+  @Field(() => [Comment], { nullable: true })
+  comments?: Comment[];
+
+  @Field(() => [Error], { nullable: true })
+  errors?: Error[];
 }
 
 @InputType()
