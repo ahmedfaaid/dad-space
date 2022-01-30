@@ -58,8 +58,6 @@ export class PostResolver {
         };
       }
 
-      console.log(post);
-
       return { post };
     } catch (error) {
       return {
