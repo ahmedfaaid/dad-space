@@ -35,4 +35,9 @@ export type Topic = {
 
 export type Comment = {
   id: string;
+  text?: string;
+  postedBy?: User;
+  parent?: Comment;
+  children?: Comment[];
+  createdAt?: Date;
 };
