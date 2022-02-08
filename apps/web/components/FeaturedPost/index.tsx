@@ -1,3 +1,4 @@
+import NextLink from 'next/link';
 import {
   Avatar,
   Box,
@@ -6,7 +7,8 @@ import {
   Grid,
   Heading,
   Link,
-  Text
+  Text,
+  Spacer
 } from '@chakra-ui/react';
 import { ChatIcon } from '@chakra-ui/icons';
 import { ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons';
@@ -33,7 +35,7 @@ export default function FeaturedPost({ post }: FeaturedPostProps) {
       boxShadow='md'
       borderRadius={4}
     >
-      <Box textAlign='center' position='absolute' top={8}>
+      <Box textAlign='center' position='absolute' top={7}>
         <ChevronUpIcon
           w={6}
           h={6}
@@ -63,13 +65,18 @@ export default function FeaturedPost({ post }: FeaturedPostProps) {
           {post.topic.name}
         </Text>
       </Flex>
-      <Box width='80%' mx='auto'>
+      <Flex direction='column' width='80%' height='90%' mx='auto'>
         <Box>
-          <Heading as='h2' size='sm' mb={2} color='black'>
-            {post.headline}
-          </Heading>
+          <NextLink href={`/posts/${post.id}`}>
+            <a>
+              <Heading as='h2' size='sm' mb={2} color='black'>
+                {post.headline}
+              </Heading>
+            </a>
+          </NextLink>
           <Text fontSize='xs'>{post.text.substring(0, 500)}...</Text>
         </Box>
+        <Spacer />
         <Divider my={4} />
         <Grid templateColumns='repeat(3, 1fr)'>
           <Flex align='center'>
@@ -91,7 +98,7 @@ export default function FeaturedPost({ post }: FeaturedPostProps) {
             </Text>
           </Flex>
         </Grid>
-      </Box>
+      </Flex>
     </Flex>
   );
 }
