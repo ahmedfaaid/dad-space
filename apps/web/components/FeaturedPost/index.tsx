@@ -1,6 +1,7 @@
 import NextLink from 'next/link';
 import {
   Avatar,
+  Badge,
   Box,
   Divider,
   Flex,
@@ -61,9 +62,13 @@ export default function FeaturedPost({ post }: FeaturedPostProps) {
         border='1px'
         borderColor='star-command-blue'
       >
-        <Text fontSize='sm' color='star-command-blue'>
+        <Badge
+          fontSize='sm'
+          colorScheme='star-command-blue'
+          color='star-command-blue'
+        >
           {post.topic.name}
-        </Text>
+        </Badge>
       </Flex>
       <Flex direction='column' width='80%' height='90%' mx='auto'>
         <Box>
