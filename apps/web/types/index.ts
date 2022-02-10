@@ -23,6 +23,8 @@ export type Post = {
   text: string;
   topic: Topic;
   postedBy: User;
+  voteCount: number;
+  votes?: Vote[];
   comments: Comment[];
   createdAt?: Date;
 };
@@ -40,4 +42,13 @@ export type Comment = {
   parent?: Comment;
   children?: Comment[];
   createdAt?: Date;
+};
+
+export type Vote = {
+  id: string;
+  value: number;
+  user: User;
+  post: Post;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
