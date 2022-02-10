@@ -32,7 +32,7 @@ export class PostResolver {
 
     return await postRepository.find({
       order: { createdAt: 'DESC' },
-      relations: ['topic', 'postedBy', 'comments'],
+      relations: ['topic', 'postedBy', 'comments', 'votes'],
       take,
       skip
     });
@@ -44,7 +44,13 @@ export class PostResolver {
 
     try {
       const post = await postRepository.findOne(id, {
-        relations: ['topic', 'postedBy', 'comments', 'comments.postedBy']
+        relations: [
+          'topic',
+          'postedBy',
+          'comments',
+          'comments.postedBy',
+          'votes'
+        ]
       });
 
       if (!post) {
