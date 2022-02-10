@@ -19,7 +19,7 @@ export type Scalars = {
 
 export type Comment = {
   __typename?: 'Comment';
-  children: Array<Comment>;
+  children?: Maybe<Array<Comment>>;
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
   parent?: Maybe<Comment>;
@@ -32,8 +32,13 @@ export type Comment = {
 export type CommentInput = {
   parentId?: InputMaybe<Scalars['String']>;
   postId: Scalars['String'];
-  postedById: Scalars['String'];
   text: Scalars['String'];
+};
+
+export type CommentsResponse = {
+  __typename?: 'CommentsResponse';
+  comments?: Maybe<Array<Comment>>;
+  errors?: Maybe<Array<Error>>;
 };
 
 export type Error = {
@@ -44,7 +49,7 @@ export type Error = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createComment: Comment;
+  createComment: CommentsResponse;
   createPost: PostResponse;
   forgotPassword: Scalars['Boolean'];
   login?: Maybe<UserResponse>;
@@ -95,6 +100,8 @@ export type Post = {
   text: Scalars['String'];
   topic: Topic;
   updatedAt: Scalars['DateTime'];
+  voteCount: Scalars['Int'];
+  votes?: Maybe<Array<Vote>>;
 };
 
 export type PostCommentsResponse = {
@@ -176,6 +183,7 @@ export type User = {
   moderates: Array<Topic>;
   posts: Array<Post>;
   updatedAt: Scalars['DateTime'];
+  votes?: Maybe<Array<Vote>>;
 };
 
 export type UserInput = {
@@ -189,6 +197,16 @@ export type UserResponse = {
   __typename?: 'UserResponse';
   errors?: Maybe<Array<Error>>;
   user?: Maybe<User>;
+};
+
+export type Vote = {
+  __typename?: 'Vote';
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  post: Post;
+  updatedAt: Scalars['DateTime'];
+  user: User;
+  value: Scalars['Int'];
 };
 
 export type ErrorFragmentFragment = { __typename?: 'Error', path: string, message: string };
@@ -247,14 +265,14 @@ export type PostQueryVariables = Exact<{
 }>;
 
 
-export type PostQuery = { __typename?: 'Query', post: { __typename?: 'PostResponse', post?: { __typename?: 'Post', id: string, headline: string, text: string, createdAt: any, topic: { __typename?: 'Topic', id: string, name: string }, postedBy: { __typename?: 'User', id: string, firstName: string, lastName: string }, comments: Array<{ __typename?: 'Comment', id: string, text: string, createdAt: any, postedBy: { __typename?: 'User', id: string, firstName: string, lastName: string } }> } | null | undefined, errors?: Array<{ __typename?: 'Error', path: string, message: string }> | null | undefined } };
+export type PostQuery = { __typename?: 'Query', post: { __typename?: 'PostResponse', post?: { __typename?: 'Post', id: string, headline: string, text: string, voteCount: number, createdAt: any, topic: { __typename?: 'Topic', id: string, name: string }, postedBy: { __typename?: 'User', id: string, firstName: string, lastName: string }, votes?: Array<{ __typename?: 'Vote', id: string, value: number, user: { __typename?: 'User', id: string } }> | null | undefined, comments: Array<{ __typename?: 'Comment', id: string, text: string, createdAt: any, postedBy: { __typename?: 'User', id: string, firstName: string, lastName: string } }> } | null | undefined, errors?: Array<{ __typename?: 'Error', path: string, message: string }> | null | undefined } };
 
 export type PostCommentsQueryVariables = Exact<{
   postId: Scalars['String'];
 }>;
 
 
-export type PostCommentsQuery = { __typename?: 'Query', postComments: { __typename?: 'PostCommentsResponse', comments?: Array<{ __typename?: 'Comment', id: string, text: string, createdAt: any, postedBy: { __typename?: 'User', id: string, firstName: string, lastName: string }, parent?: { __typename?: 'Comment', id: string } | null | undefined, children: Array<{ __typename?: 'Comment', id: string }> }> | null | undefined, errors?: Array<{ __typename?: 'Error', path: string, message: string }> | null | undefined } };
+export type PostCommentsQuery = { __typename?: 'Query', postComments: { __typename?: 'PostCommentsResponse', comments?: Array<{ __typename?: 'Comment', id: string, text: string, createdAt: any, postedBy: { __typename?: 'User', id: string, firstName: string, lastName: string }, parent?: { __typename?: 'Comment', id: string } | null | undefined, children?: Array<{ __typename?: 'Comment', id: string }> | null | undefined }> | null | undefined, errors?: Array<{ __typename?: 'Error', path: string, message: string }> | null | undefined } };
 
 export type PostsQueryVariables = Exact<{
   skip: Scalars['Int'];
@@ -262,7 +280,7 @@ export type PostsQueryVariables = Exact<{
 }>;
 
 
-export type PostsQuery = { __typename?: 'Query', posts: Array<{ __typename?: 'Post', id: string, headline: string, text: string, createdAt: any, topic: { __typename?: 'Topic', name: string }, postedBy: { __typename?: 'User', id: string, firstName: string, lastName: string }, comments: Array<{ __typename?: 'Comment', id: string }> }> };
+export type PostsQuery = { __typename?: 'Query', posts: Array<{ __typename?: 'Post', id: string, headline: string, text: string, createdAt: any, voteCount: number, topic: { __typename?: 'Topic', name: string }, postedBy: { __typename?: 'User', id: string, firstName: string, lastName: string }, votes?: Array<{ __typename?: 'Vote', id: string, value: number, user: { __typename?: 'User', id: string } }> | null | undefined, comments: Array<{ __typename?: 'Comment', id: string }> }> };
 
 export type TopicsQueryVariables = Exact<{
   query?: InputMaybe<Scalars['String']>;
@@ -413,6 +431,14 @@ export const PostDocument = gql`
         firstName
         lastName
       }
+      voteCount
+      votes {
+        id
+        value
+        user {
+          id
+        }
+      }
       comments {
         id
         text
@@ -480,6 +506,14 @@ export const PostsDocument = gql`
       id
       firstName
       lastName
+    }
+    voteCount
+    votes {
+      id
+      value
+      user {
+        id
+      }
     }
     comments {
       id

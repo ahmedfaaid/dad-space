@@ -12,6 +12,14 @@ query Posts($skip: Int!, $limit: Int!) {
       firstName
       lastName
     }
+    voteCount
+    votes {
+      id
+      value
+      user {
+        id
+      }
+    }
     comments {
       id
     }

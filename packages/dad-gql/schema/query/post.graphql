@@ -13,6 +13,14 @@ query Post($id: String!) {
         firstName
         lastName
       }
+      voteCount
+      votes {
+        id
+        value
+        user {
+          id
+        }
+      }
       comments {
         id
         text
