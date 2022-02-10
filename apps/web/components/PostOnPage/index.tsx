@@ -52,7 +52,7 @@ export default function PostOnPage({
               _hover={{ color: 'star-command-blue' }}
               cursor='pointer'
             />
-            <Text color='star-command-blue'>12K</Text>
+            <Text color='star-command-blue'>{post.voteCount}</Text>
             <ChevronDownIcon
               w={5}
               h={5}

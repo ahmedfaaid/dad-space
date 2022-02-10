@@ -43,7 +43,7 @@ export default function FeaturedPost({ post }: FeaturedPostProps) {
           _hover={{ color: 'star-command-blue' }}
           cursor='pointer'
         />
-        <Text color='star-command-blue'>12K</Text>
+        <Text color='star-command-blue'>{post.voteCount}</Text>
         <ChevronDownIcon
           w={6}
           h={6}
