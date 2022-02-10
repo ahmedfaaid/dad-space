@@ -54,7 +54,8 @@ type Post {
   text: String!
   topic: Topic!
   updatedAt: DateTime!
-  upvotes: Int!
+  voteCount: Int!
+  votes: [Vote!]!
 }
 
 type PostCommentsResponse {
@@ -105,6 +106,7 @@ type User {
   moderates: [Topic!]!
   posts: [Post!]!
   updatedAt: DateTime!
+  votes: [Vote!]!
 }
 
 input UserInput {
@@ -117,4 +119,13 @@ input UserInput {
 type UserResponse {
   errors: [Error!]
   user: User
+}
+
+type Vote {
+  createdAt: DateTime!
+  id: ID!
+  post: Post!
+  updatedAt: DateTime!
+  user: User!
+  value: Int!
 }

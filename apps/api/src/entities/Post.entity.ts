@@ -13,6 +13,7 @@ import { User } from './User.entity';
 import { Topic } from './Topic.entity';
 import { Comment } from './Comment.entity';
 import { Error } from './Error.entity';
+import { Vote } from './Vote.entity';
 
 @Entity()
 @ObjectType()
@@ -44,8 +45,12 @@ export class Post {
   comments: Comment[];
 
   @Field(() => Int)
-  @Column({ default: 0 })
-  upvotes: number;
+  @Column({ type: 'int', default: 0 })
+  voteCount: number;
+
+  @Field(() => [Vote])
+  @OneToMany(() => Vote, vote => vote.post, { cascade: true })
+  votes: Vote[];
 
   @Field()
   @CreateDateColumn()

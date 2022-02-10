@@ -12,6 +12,7 @@ import { Post } from './Post.entity';
 import { Comment } from './Comment.entity';
 import { Topic } from './Topic.entity';
 import { Error } from './Error.entity';
+import { Vote } from './Vote.entity';
 
 @Entity()
 @ObjectType()
@@ -46,6 +47,10 @@ export class User {
   @Field(() => [Topic])
   @ManyToMany(() => Topic, topic => topic.moderators)
   moderates: Post[];
+
+  @Field(() => [Vote])
+  @OneToMany(() => Vote, vote => vote.user)
+  votes: Vote[];
 
   @Field()
   @CreateDateColumn()
