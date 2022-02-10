@@ -67,7 +67,7 @@ export default function Post() {
             <Text>There are no comments. Be the first to comment.</Text>
           ) : (
             commentData.postComments.comments.map(comment => (
-              <Comment key={comment.id} comment={comment} />
+              <Comment key={comment.id} comment={comment} user={user} />
             ))
           )}
         </Box>

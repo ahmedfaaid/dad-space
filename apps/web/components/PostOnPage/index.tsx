@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Flex,
   Box,
@@ -5,10 +6,21 @@ import {
   Spacer,
   Avatar,
   Link,
-  Text
+  Text,
+  Button
 } from '@chakra-ui/react';
 import { ChevronUpIcon, ChevronDownIcon, ChatIcon } from '@chakra-ui/icons';
 import CommentForm from './CommentForm';
+import { Post, User } from '../../types';
+import ConfirmDelete from '../ConfirmDelete';
+
+interface FeaturedPostProps {
+  post: Post;
+  user: User;
+  handleChange: any;
+  handleSubmit: () => void;
+  isSubmitting: boolean;
+}
 
 export default function PostOnPage({
   post,
@@ -16,7 +28,10 @@ export default function PostOnPage({
   handleChange,
   handleSubmit,
   isSubmitting
-}) {
+}: FeaturedPostProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const onClose = () => setIsOpen(false);
+
   return (
     <>
       <Flex direction='column' minH='200px'>
@@ -29,7 +44,7 @@ export default function PostOnPage({
           <Text fontSize='md'>{post.text}</Text>
         </Box>
         <Spacer />
-        <Flex>
+        <Flex align='center'>
           <Flex>
             <ChevronUpIcon
               w={5}
@@ -58,6 +73,19 @@ export default function PostOnPage({
               </Link>
             </Text>
           </Flex>
+          {post.postedBy.id === user.id && (
+            <>
+              <Spacer />
+              <Button
+                colorScheme='red'
+                variant='link'
+                size='sm'
+                onClick={() => setIsOpen(true)}
+              >
+                Delete
+              </Button>
+            </>
+          )}
         </Flex>
       </Flex>
       <CommentForm
@@ -66,6 +94,7 @@ export default function PostOnPage({
         handleChange={handleChange}
         isSubmitting={isSubmitting}
       />
+      <ConfirmDelete item='post' isOpen={isOpen} onClose={onClose} />
     </>
   );
 }
