@@ -48,7 +48,7 @@ export class User {
   @ManyToMany(() => Topic, topic => topic.moderators)
   moderates: Post[];
 
-  @Field(() => [Vote])
+  @Field(() => [Vote], { nullable: true })
   @OneToMany(() => Vote, vote => vote.user)
   votes: Vote[];
 

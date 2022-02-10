@@ -55,7 +55,7 @@ type Post {
   topic: Topic!
   updatedAt: DateTime!
   voteCount: Int!
-  votes: [Vote!]!
+  votes: [Vote!]
 }
 
 type PostCommentsResponse {
@@ -106,7 +106,7 @@ type User {
   moderates: [Topic!]!
   posts: [Post!]!
   updatedAt: DateTime!
-  votes: [Vote!]!
+  votes: [Vote!]
 }
 
 input UserInput {
