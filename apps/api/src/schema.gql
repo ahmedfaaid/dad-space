@@ -54,6 +54,7 @@ type Post {
   text: String!
   topic: Topic!
   updatedAt: DateTime!
+  upvotes: Int!
 }
 
 type PostCommentsResponse {

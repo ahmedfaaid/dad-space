@@ -8,7 +8,7 @@ import {
   JoinColumn,
   OneToMany
 } from 'typeorm';
-import { ObjectType, Field, InputType, ID } from 'type-graphql';
+import { ObjectType, Field, InputType, ID, Int } from 'type-graphql';
 import { User } from './User.entity';
 import { Topic } from './Topic.entity';
 import { Comment } from './Comment.entity';
@@ -42,6 +42,10 @@ export class Post {
   @OneToMany(() => Comment, comment => comment.post, { cascade: true })
   @JoinColumn()
   comments: Comment[];
+
+  @Field(() => Int)
+  @Column({ default: 0 })
+  upvotes: number;
 
   @Field()
   @CreateDateColumn()
