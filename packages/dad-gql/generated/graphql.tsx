@@ -101,6 +101,7 @@ export type Post = {
   topic: Topic;
   updatedAt: Scalars['DateTime'];
   voteCount: Scalars['Int'];
+  voteStatus?: Maybe<Scalars['Int']>;
   votes?: Maybe<Array<Vote>>;
 };
 
@@ -265,7 +266,7 @@ export type PostQueryVariables = Exact<{
 }>;
 
 
-export type PostQuery = { __typename?: 'Query', post: { __typename?: 'PostResponse', post?: { __typename?: 'Post', id: string, headline: string, text: string, voteCount: number, createdAt: any, topic: { __typename?: 'Topic', id: string, name: string }, postedBy: { __typename?: 'User', id: string, firstName: string, lastName: string }, votes?: Array<{ __typename?: 'Vote', id: string, value: number, user: { __typename?: 'User', id: string } }> | null | undefined, comments: Array<{ __typename?: 'Comment', id: string, text: string, createdAt: any, postedBy: { __typename?: 'User', id: string, firstName: string, lastName: string } }> } | null | undefined, errors?: Array<{ __typename?: 'Error', path: string, message: string }> | null | undefined } };
+export type PostQuery = { __typename?: 'Query', post: { __typename?: 'PostResponse', post?: { __typename?: 'Post', id: string, headline: string, text: string, voteCount: number, voteStatus?: number | null | undefined, createdAt: any, topic: { __typename?: 'Topic', id: string, name: string }, postedBy: { __typename?: 'User', id: string, firstName: string, lastName: string }, votes?: Array<{ __typename?: 'Vote', id: string, value: number, user: { __typename?: 'User', id: string } }> | null | undefined, comments: Array<{ __typename?: 'Comment', id: string, text: string, createdAt: any, postedBy: { __typename?: 'User', id: string, firstName: string, lastName: string } }> } | null | undefined, errors?: Array<{ __typename?: 'Error', path: string, message: string }> | null | undefined } };
 
 export type PostCommentsQueryVariables = Exact<{
   postId: Scalars['String'];
@@ -280,7 +281,7 @@ export type PostsQueryVariables = Exact<{
 }>;
 
 
-export type PostsQuery = { __typename?: 'Query', posts: Array<{ __typename?: 'Post', id: string, headline: string, text: string, createdAt: any, voteCount: number, topic: { __typename?: 'Topic', name: string }, postedBy: { __typename?: 'User', id: string, firstName: string, lastName: string }, votes?: Array<{ __typename?: 'Vote', id: string, value: number, user: { __typename?: 'User', id: string } }> | null | undefined, comments: Array<{ __typename?: 'Comment', id: string }> }> };
+export type PostsQuery = { __typename?: 'Query', posts: Array<{ __typename?: 'Post', id: string, headline: string, text: string, createdAt: any, voteCount: number, voteStatus?: number | null | undefined, topic: { __typename?: 'Topic', name: string }, postedBy: { __typename?: 'User', id: string, firstName: string, lastName: string }, votes?: Array<{ __typename?: 'Vote', id: string, value: number, user: { __typename?: 'User', id: string } }> | null | undefined, comments: Array<{ __typename?: 'Comment', id: string }> }> };
 
 export type TopicsQueryVariables = Exact<{
   query?: InputMaybe<Scalars['String']>;
@@ -432,6 +433,7 @@ export const PostDocument = gql`
         lastName
       }
       voteCount
+      voteStatus
       votes {
         id
         value
@@ -508,6 +510,7 @@ export const PostsDocument = gql`
       lastName
     }
     voteCount
+    voteStatus
     votes {
       id
       value

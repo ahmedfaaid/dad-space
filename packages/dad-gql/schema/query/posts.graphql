@@ -13,6 +13,7 @@ query Posts($skip: Int!, $limit: Int!) {
       lastName
     }
     voteCount
+    voteStatus
     votes {
       id
       value
