@@ -55,6 +55,7 @@ type Post {
   topic: Topic!
   updatedAt: DateTime!
   voteCount: Int!
+  voteStatus: Int
   votes: [Vote!]
 }
 

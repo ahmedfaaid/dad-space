@@ -52,6 +52,10 @@ export class Post {
   @OneToMany(() => Vote, vote => vote.post, { cascade: true })
   votes: Vote[];
 
+  @Field(() => Int, { nullable: true })
+  @Column({ type: 'int', nullable: true })
+  voteStatus: number;
+
   @Field()
   @CreateDateColumn()
   createdAt: Date;

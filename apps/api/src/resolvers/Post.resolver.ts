@@ -2,10 +2,12 @@ import { getRepository } from 'typeorm';
 import {
   Arg,
   Ctx,
+  FieldResolver,
   Int,
   Mutation,
   Query,
   Resolver,
+  Root,
   UseMiddleware
 } from 'type-graphql';
 import {
@@ -19,9 +21,32 @@ import { Topic } from '../entities/Topic.entity';
 import { Comment } from '../entities/Comment.entity';
 import { isAuth } from '../middleware/isAuth';
 import { Context } from '../types/Context';
+import { Vote } from '../entities/Vote.entity';
 
-@Resolver()
+@Resolver(Post)
 export class PostResolver {
+  @FieldResolver(() => Int, { nullable: true })
+  async voteStatus(@Root() post: Post, @Ctx() ctx: Context) {
+    const voteRepository = getRepository(Vote);
+
+    if (!ctx.req.session.userId) {
+      return 0;
+    }
+
+    const vote = await voteRepository.findOne({
+      where: {
+        post: post.id,
+        user: ctx.req.session.userId
+      }
+    });
+
+    if (!vote) {
+      return 0;
+    }
+
+    return vote.value;
+  }
+
   @Query(() => [Post])
   async posts(
     @Arg('limit', () => Int) limit: number,
