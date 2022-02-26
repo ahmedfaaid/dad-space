@@ -36,7 +36,9 @@ export default function FeaturedPost({ post }: FeaturedPostProps) {
       boxShadow='md'
       borderRadius={4}
     >
-      <VoteSection post={post} />
+      <Box textAlign='center' position='absolute' top={7}>
+        <VoteSection post={post} />
+      </Box>
       <Flex
         minW='70px'
         h='25px'

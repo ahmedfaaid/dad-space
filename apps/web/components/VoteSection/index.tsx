@@ -11,7 +11,7 @@ export default function VoteSection({ post }: VoteSectionProps) {
   const [_, vote] = useVoteMutation();
 
   return (
-    <Box textAlign='center' position='absolute' top={7}>
+    <>
       <IconButton
         onClick={async () => {
           if (post.voteStatus === 1) {
@@ -49,6 +49,6 @@ export default function VoteSection({ post }: VoteSectionProps) {
         variant='ghost'
         icon={<ChevronDownIcon w={6} h={6} />}
       />
-    </Box>
+    </>
   );
 }
