@@ -1,7 +1,7 @@
 export type User = {
   id: string;
-  firstName: string;
-  lastName: string;
+  firstName?: string;
+  lastName?: string;
   email?: string;
   createdAt?: Date;
 };
@@ -25,6 +25,7 @@ export type Post = {
   postedBy: User;
   voteCount: number;
   votes?: Vote[];
+  voteStatus?: number;
   comments: Comment[];
   createdAt?: Date;
 };
@@ -47,8 +48,8 @@ export type Comment = {
 export type Vote = {
   id: string;
   value: number;
-  user: User;
-  post: Post;
+  user?: User;
+  post?: Post;
   createdAt?: Date;
   updatedAt?: Date;
 };
