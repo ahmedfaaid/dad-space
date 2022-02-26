@@ -13,6 +13,7 @@ import { ChevronUpIcon, ChevronDownIcon, ChatIcon } from '@chakra-ui/icons';
 import CommentForm from './CommentForm';
 import { Post, User } from '../../types';
 import ConfirmDelete from '../ConfirmDelete';
+import VoteSection from '../VoteSection';
 
 interface FeaturedPostProps {
   post: Post;
@@ -45,20 +46,8 @@ export default function PostOnPage({
         </Box>
         <Spacer />
         <Flex align='center'>
-          <Flex>
-            <ChevronUpIcon
-              w={5}
-              h={5}
-              _hover={{ color: 'star-command-blue' }}
-              cursor='pointer'
-            />
-            <Text color='star-command-blue'>{post.voteCount}</Text>
-            <ChevronDownIcon
-              w={5}
-              h={5}
-              _hover={{ color: 'star-command-blue' }}
-              cursor='pointer'
-            />
+          <Flex align='center'>
+            <VoteSection post={post} />
           </Flex>
           <Flex ml={4} align='center' justifySelf='end'>
             <ChatIcon w={3} h={3} mr={2} />
