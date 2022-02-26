@@ -15,7 +15,7 @@ Dads unite!
   - [ ] Post
     - [x] Create Post
   - [ ] Comment
-- [ ] Allow upvoting/downvoting on posts
+- [x] Allow upvoting/downvoting on posts
 - [ ] Querying posts
   - [x] Pagination
   - [ ] Ordering
