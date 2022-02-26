@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@urql/exchange-graphcache": "^4.3.6",
     "config": "*",
     "dad-gql": "*",
     "date-fns": "^1.30.1",
