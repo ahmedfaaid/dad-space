@@ -49,7 +49,7 @@ export class Post {
   voteCount: number;
 
   @Field(() => [Vote], { nullable: true })
-  @OneToMany(() => Vote, vote => vote.post, { cascade: true })
+  @OneToMany(() => Vote, vote => vote.post)
   votes: Vote[];
 
   @Field(() => Int, { nullable: true })

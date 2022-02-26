@@ -26,7 +26,7 @@ import { Vote } from '../entities/Vote.entity';
 @Resolver(Post)
 export class PostResolver {
   @FieldResolver(() => Int, { nullable: true })
-  async voteStatus(@Root() post: Post, @Ctx() ctx: Context) {
+  async voteStatus(@Root() post: Post, @Ctx() ctx: Context): Promise<number> {
     const voteRepository = getRepository(Vote);
 
     if (!ctx.req.session.userId) {
@@ -45,6 +45,54 @@ export class PostResolver {
     }
 
     return vote.value;
+  }
+
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async vote(
+    @Arg('postId') postId: string,
+    @Arg('value', () => Int) value: number,
+    @Ctx() ctx: Context
+  ): Promise<Boolean> {
+    const voteRepository = getRepository(Vote);
+    const postRepository = getRepository(Post);
+    const userRepository = getRepository(User);
+
+    const actualValue = value > 0 ? 1 : -1;
+
+    const vote = await voteRepository.findOne({
+      where: {
+        post: postId,
+        user: ctx.req.session.userId
+      }
+    });
+
+    const post = await postRepository.findOne(postId);
+    const voter = await userRepository.findOne(ctx.req.session.userId);
+
+    if (vote && vote.value !== actualValue) {
+      await voteRepository.update(vote.id, {
+        value: actualValue
+      });
+
+      const v = 2 * actualValue;
+
+      await postRepository.update(postId, {
+        voteCount: post!.voteCount + v
+      });
+    } else if (!vote) {
+      await voteRepository.save({
+        value: actualValue,
+        post,
+        user: voter
+      });
+
+      await postRepository.update(postId, {
+        voteCount: post!.voteCount + actualValue
+      });
+    }
+
+    return true;
   }
 
   @Query(() => [Post])
@@ -74,7 +122,8 @@ export class PostResolver {
           'postedBy',
           'comments',
           'comments.postedBy',
-          'votes'
+          'votes',
+          'votes.user'
         ]
       });
 

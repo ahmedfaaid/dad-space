@@ -28,7 +28,7 @@ export class Vote {
   user: User;
 
   @Field(() => Post)
-  @ManyToOne(() => Post, post => post.votes)
+  @ManyToOne(() => Post, post => post.votes, { cascade: true })
   @JoinColumn()
   post: Post;
 

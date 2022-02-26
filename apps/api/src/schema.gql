@@ -43,6 +43,7 @@ type Mutation {
   logout: Boolean!
   resetPassword(newPassword: String!, token: String!): UserResponse!
   signup(user: UserInput!): UserResponse
+  vote(postId: String!, value: Int!): Boolean!
 }
 
 type Post {
