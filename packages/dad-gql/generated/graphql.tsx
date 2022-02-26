@@ -56,6 +56,7 @@ export type Mutation = {
   logout: Scalars['Boolean'];
   resetPassword: UserResponse;
   signup?: Maybe<UserResponse>;
+  vote: Scalars['Boolean'];
 };
 
 
@@ -88,6 +89,12 @@ export type MutationResetPasswordArgs = {
 
 export type MutationSignupArgs = {
   user: UserInput;
+};
+
+
+export type MutationVoteArgs = {
+  postId: Scalars['String'];
+  value: Scalars['Int'];
 };
 
 export type Post = {
@@ -256,6 +263,14 @@ export type SignupMutationVariables = Exact<{
 
 export type SignupMutation = { __typename?: 'Mutation', signup?: { __typename?: 'UserResponse', user?: { __typename?: 'User', id: string, firstName: string, lastName: string, email: string, createdAt: any } | null | undefined, errors?: Array<{ __typename?: 'Error', path: string, message: string }> | null | undefined } | null | undefined };
 
+export type VoteMutationVariables = Exact<{
+  value: Scalars['Int'];
+  postId: Scalars['String'];
+}>;
+
+
+export type VoteMutation = { __typename?: 'Mutation', vote: boolean };
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -401,6 +416,15 @@ export const SignupDocument = gql`
 
 export function useSignupMutation() {
   return Urql.useMutation<SignupMutation, SignupMutationVariables>(SignupDocument);
+};
+export const VoteDocument = gql`
+    mutation Vote($value: Int!, $postId: String!) {
+  vote(value: $value, postId: $postId)
+}
+    `;
+
+export function useVoteMutation() {
+  return Urql.useMutation<VoteMutation, VoteMutationVariables>(VoteDocument);
 };
 export const MeDocument = gql`
     query Me {
