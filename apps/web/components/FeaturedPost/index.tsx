@@ -12,8 +12,8 @@ import {
   Spacer
 } from '@chakra-ui/react';
 import { ChatIcon } from '@chakra-ui/icons';
-import { ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import { Post } from '../../types';
+import VoteSection from '../VoteSection';
 
 interface FeaturedPostProps {
   post: Post;
@@ -36,21 +36,7 @@ export default function FeaturedPost({ post }: FeaturedPostProps) {
       boxShadow='md'
       borderRadius={4}
     >
-      <Box textAlign='center' position='absolute' top={7}>
-        <ChevronUpIcon
-          w={6}
-          h={6}
-          _hover={{ color: 'star-command-blue' }}
-          cursor='pointer'
-        />
-        <Text color='star-command-blue'>{post.voteCount}</Text>
-        <ChevronDownIcon
-          w={6}
-          h={6}
-          _hover={{ color: 'star-command-blue' }}
-          cursor='pointer'
-        />
-      </Box>
+      <VoteSection post={post} />
       <Flex
         minW='70px'
         h='25px'
