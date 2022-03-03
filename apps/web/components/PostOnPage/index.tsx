@@ -29,13 +29,6 @@ export default function PostOnPage({ post, user, postId }: FeaturedPostProps) {
   const [isOpen, setIsOpen] = useState(false);
   const onClose = () => setIsOpen(false);
 
-  const [{ data: commentData, fetching: commentFetching }] =
-    usePostCommentsQuery({
-      variables: { postId }
-    });
-
-  const commentSkeleton = <Skeleton />;
-
   return (
     <>
       <Flex direction='column' minH='200px'>
@@ -83,12 +76,10 @@ export default function PostOnPage({ post, user, postId }: FeaturedPostProps) {
       <CommentForm user={user} />
       <Box mt={8}>
         <Divider mb={4} />
-        {commentFetching ? (
-          commentSkeleton
-        ) : commentData.postComments.comments.length === 0 ? (
+        {post.comments.length === 0 ? (
           <Text>There are no comments. Be the first to comment.</Text>
         ) : (
-          commentData.postComments.comments.map(comment => (
+          post.comments.map(comment => (
             <Comment key={comment.id} comment={comment} user={user} />
           ))
         )}
