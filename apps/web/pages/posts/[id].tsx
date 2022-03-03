@@ -1,13 +1,11 @@
 import { useContext } from 'react';
 import { useRouter } from 'next/router';
-import { Box, Divider, Skeleton, Text } from '@chakra-ui/react';
-import { usePostQuery, usePostCommentsQuery } from 'dad-gql';
-import { useFormik } from 'formik';
+import { Box, Text } from '@chakra-ui/react';
+import { usePostQuery } from 'dad-gql';
 import Layout from '../../components/layout';
 import { AuthContext } from '../../context/auth';
 import PostOnPage from '../../components/PostOnPage';
 import PostSkeleton from '../../components/PostOnPage/PostSkeleton';
-import Comment from '../../components/PostOnPage/Comment';
 
 export default function Post() {
   const router = useRouter();
@@ -16,21 +14,6 @@ export default function Post() {
   const [{ data, fetching }] = usePostQuery({
     variables: { id: id as string }
   });
-  const [{ data: commentData, fetching: commentFetching }] =
-    usePostCommentsQuery({
-      variables: { postId: id as string }
-    });
-
-  const { handleSubmit, handleChange, isSubmitting } = useFormik({
-    initialValues: {
-      text: ''
-    },
-    onSubmit: async (values, { setSubmitting }) => {
-      console.log(values);
-    }
-  });
-
-  const commentSkeleton = <Skeleton />;
 
   return (
     <Layout>
@@ -51,26 +34,8 @@ export default function Post() {
         ) : !data ? (
           <Text>No post found</Text>
         ) : (
-          <PostOnPage
-            post={data.post.post}
-            user={user}
-            handleSubmit={handleSubmit}
-            handleChange={handleChange}
-            isSubmitting={isSubmitting}
-          />
+          <PostOnPage post={data.post.post} user={user} postId={id as string} />
         )}
-        <Box mt={8}>
-          <Divider mb={4} />
-          {commentFetching ? (
-            commentSkeleton
-          ) : commentData.postComments.comments.length === 0 ? (
-            <Text>There are no comments. Be the first to comment.</Text>
-          ) : (
-            commentData.postComments.comments.map(comment => (
-              <Comment key={comment.id} comment={comment} user={user} />
-            ))
-          )}
-        </Box>
       </Box>
     </Layout>
   );

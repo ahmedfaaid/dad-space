@@ -4,7 +4,6 @@ import {
   Box,
   Button,
   Flex,
-  IconButton,
   Link,
   Spacer,
   Text
@@ -14,6 +13,7 @@ import { BsReply } from 'react-icons/bs';
 import { distanceInWordsToNow } from 'date-fns';
 import { Comment as CommentType, User } from '../../types';
 import ConfirmDelete from '../ConfirmDelete';
+import CommentForm from './CommentForm';
 
 interface CommentProps {
   comment: CommentType;
@@ -22,6 +22,7 @@ interface CommentProps {
 
 export default function Comment({ comment, user }: CommentProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [showReplyForm, setShowReplyForm] = useState(false);
   const onClose = () => setIsOpen(false);
 
   return (
@@ -42,7 +43,7 @@ export default function Comment({ comment, user }: CommentProps) {
           {comment.text}
         </Text>
         <Flex align='center' ml={7} mt={2}>
-          <Link>
+          <Link onClick={() => setShowReplyForm(true)}>
             <Text fontSize='sm' fontWeight='semibold'>
               <Icon as={BsReply} w={4} h={3} /> Reply
             </Text>
@@ -65,6 +66,14 @@ export default function Comment({ comment, user }: CommentProps) {
           )}
         </Flex>
       </Box>
+      {showReplyForm && (
+        <CommentForm
+          user={user}
+          parentId={comment.id}
+          parentCreator={comment.postedBy}
+          setShowReplyForm={setShowReplyForm}
+        />
+      )}
       <ConfirmDelete item='comment' isOpen={isOpen} onClose={onClose} />
     </>
   );

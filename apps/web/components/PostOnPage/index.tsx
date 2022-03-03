@@ -7,9 +7,13 @@ import {
   Avatar,
   Link,
   Text,
-  Button
+  Button,
+  Divider,
+  Skeleton
 } from '@chakra-ui/react';
-import { ChevronUpIcon, ChevronDownIcon, ChatIcon } from '@chakra-ui/icons';
+import { ChatIcon } from '@chakra-ui/icons';
+import { usePostCommentsQuery } from 'dad-gql';
+import Comment from './Comment';
 import CommentForm from './CommentForm';
 import { Post, User } from '../../types';
 import ConfirmDelete from '../ConfirmDelete';
@@ -18,20 +22,19 @@ import VoteSection from '../VoteSection';
 interface FeaturedPostProps {
   post: Post;
   user: User;
-  handleChange: any;
-  handleSubmit: () => void;
-  isSubmitting: boolean;
+  postId: string;
 }
 
-export default function PostOnPage({
-  post,
-  user,
-  handleChange,
-  handleSubmit,
-  isSubmitting
-}: FeaturedPostProps) {
+export default function PostOnPage({ post, user, postId }: FeaturedPostProps) {
   const [isOpen, setIsOpen] = useState(false);
   const onClose = () => setIsOpen(false);
+
+  const [{ data: commentData, fetching: commentFetching }] =
+    usePostCommentsQuery({
+      variables: { postId }
+    });
+
+  const commentSkeleton = <Skeleton />;
 
   return (
     <>
@@ -77,12 +80,19 @@ export default function PostOnPage({
           )}
         </Flex>
       </Flex>
-      <CommentForm
-        user={user}
-        handleSubmit={handleSubmit}
-        handleChange={handleChange}
-        isSubmitting={isSubmitting}
-      />
+      <CommentForm user={user} />
+      <Box mt={8}>
+        <Divider mb={4} />
+        {commentFetching ? (
+          commentSkeleton
+        ) : commentData.postComments.comments.length === 0 ? (
+          <Text>There are no comments. Be the first to comment.</Text>
+        ) : (
+          commentData.postComments.comments.map(comment => (
+            <Comment key={comment.id} comment={comment} user={user} />
+          ))
+        )}
+      </Box>
       <ConfirmDelete item='post' isOpen={isOpen} onClose={onClose} />
     </>
   );
