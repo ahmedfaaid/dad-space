@@ -47,6 +47,24 @@ export class PostResolver {
     return vote.value;
   }
 
+  @FieldResolver(() => [Comment])
+  async comments(@Root() post: Post): Promise<Comment[]> {
+    const commentRepository = getRepository(Comment);
+
+    return await commentRepository.find({
+      where: {
+        post
+      },
+      relations: [
+        'postedBy',
+        'parent',
+        'parent.postedBy',
+        'children',
+        'children.postedBy'
+      ]
+    });
+  }
+
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async vote(
@@ -105,7 +123,7 @@ export class PostResolver {
 
     return await postRepository.find({
       order: { createdAt: 'DESC' },
-      relations: ['topic', 'postedBy', 'comments', 'votes'],
+      relations: ['topic', 'postedBy', 'votes'],
       take,
       skip
     });
@@ -213,42 +231,42 @@ export class PostResolver {
     }
   }
 
-  @Query(() => PostCommentsResponse)
-  async postComments(
-    @Arg('postID') postID: string
-  ): Promise<PostCommentsResponse> {
-    const postRepository = getRepository(Post);
-    const commentRepository = getRepository(Comment);
+  // @Query(() => PostCommentsResponse)
+  // async postComments(
+  //   @Arg('postID') postID: string
+  // ): Promise<PostCommentsResponse> {
+  //   const postRepository = getRepository(Post);
+  //   const commentRepository = getRepository(Comment);
 
-    try {
-      const post = await postRepository.findOne(postID);
+  //   try {
+  //     const post = await postRepository.findOne(postID);
 
-      if (!post) {
-        return {
-          errors: [
-            {
-              path: 'postComments',
-              message: 'Post does not exist'
-            }
-          ]
-        };
-      }
+  //     if (!post) {
+  //       return {
+  //         errors: [
+  //           {
+  //             path: 'postComments',
+  //             message: 'Post does not exist'
+  //           }
+  //         ]
+  //       };
+  //     }
 
-      const comments = await commentRepository.find({
-        where: { post },
-        relations: ['postedBy', 'post', 'parent', 'children']
-      });
+  //     const comments = await commentRepository.find({
+  //       where: { post },
+  //       relations: ['postedBy', 'post', 'parent', 'children']
+  //     });
 
-      return { comments };
-    } catch (error) {
-      return {
-        errors: [
-          {
-            path: 'postComments',
-            message: 'There was an error retrieving the comments'
-          }
-        ]
-      };
-    }
-  }
+  //     return { comments };
+  //   } catch (error) {
+  //     return {
+  //       errors: [
+  //         {
+  //           path: 'postComments',
+  //           message: 'There was an error retrieving the comments'
+  //         }
+  //       ]
+  //     };
+  //   }
+  // }
 }
