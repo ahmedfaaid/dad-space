@@ -61,7 +61,10 @@ export class PostResolver {
         'parent.postedBy',
         'children',
         'children.postedBy'
-      ]
+      ],
+      order: {
+        createdAt: 'ASC'
+      }
     });
   }
 
