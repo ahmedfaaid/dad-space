@@ -38,6 +38,7 @@ type Error {
 type Mutation {
   createComment(comment: CommentInput!): CommentsResponse!
   createPost(post: PostInput!): PostResponse!
+  deleteComment(commentId: String!): Boolean!
   forgotPassword(email: String!): Boolean!
   login(email: String!, password: String!): UserResponse
   logout: Boolean!

@@ -107,4 +107,30 @@ export class CommentResolver {
       };
     }
   }
+
+  @UseMiddleware(isAuth)
+  @Mutation(() => Boolean)
+  async deleteComment(
+    @Arg('commentId') commentId: string,
+    @Ctx() ctx: Context
+  ): Promise<Boolean> {
+    const commentRepository = getRepository(Comment);
+    const userRepository = getRepository(User);
+
+    try {
+      const comment = await commentRepository.findOneOrFail(commentId, {
+        relations: ['postedBy']
+      });
+      const user = await userRepository.findOneOrFail(ctx.req.session.userId);
+
+      if (user.id !== comment.postedBy.id) {
+        return false;
+      }
+
+      await commentRepository.delete(commentId);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
 }
