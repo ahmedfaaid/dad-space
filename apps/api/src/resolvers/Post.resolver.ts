@@ -63,7 +63,7 @@ export class PostResolver {
         'children.postedBy'
       ],
       order: {
-        createdAt: 'ASC'
+        createdAt: 'DESC'
       }
     });
   }
