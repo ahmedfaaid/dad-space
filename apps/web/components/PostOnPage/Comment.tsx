@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import {
   Avatar,
   Box,
@@ -6,7 +6,8 @@ import {
   Flex,
   Link,
   Spacer,
-  Text
+  Text,
+  Divider
 } from '@chakra-ui/react';
 import { Icon } from '@chakra-ui/icons';
 import { BsReply } from 'react-icons/bs';
@@ -72,6 +73,7 @@ export default function Comment({
             </>
           )}
         </Flex>
+        <Divider mt={4} />
       </Box>
       {showReplyForm && (
         <CommentForm
