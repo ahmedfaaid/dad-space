@@ -1,0 +1,24 @@
+mutation CreateComment($comment: CommentInput!) {
+  createComment(comment: $comment) {
+    comments {
+      id
+      text
+      postedBy {
+        id
+        firstName
+        lastName
+      }
+      parent {
+        id
+      }
+      children {
+        id
+      }
+      createdAt
+    }
+    errors {
+      path
+      message
+    }
+  }
+}

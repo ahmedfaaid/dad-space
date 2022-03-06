@@ -51,6 +51,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createComment: CommentsResponse;
   createPost: PostResponse;
+  deleteComment: Scalars['Boolean'];
   forgotPassword: Scalars['Boolean'];
   login?: Maybe<UserResponse>;
   logout: Scalars['Boolean'];
@@ -67,6 +68,11 @@ export type MutationCreateCommentArgs = {
 
 export type MutationCreatePostArgs = {
   post: PostInput;
+};
+
+
+export type MutationDeleteCommentArgs = {
+  commentId: Scalars['String'];
 };
 
 
@@ -209,12 +215,26 @@ export type ErrorFragmentFragment = { __typename?: 'Error', path: string, messag
 
 export type UserFragmentFragment = { __typename?: 'User', id: string, firstName: string, lastName: string, email: string };
 
+export type CreateCommentMutationVariables = Exact<{
+  comment: CommentInput;
+}>;
+
+
+export type CreateCommentMutation = { __typename?: 'Mutation', createComment: { __typename?: 'CommentsResponse', comments?: Array<{ __typename?: 'Comment', id: string, text: string, createdAt: any, postedBy: { __typename?: 'User', id: string, firstName: string, lastName: string }, parent?: { __typename?: 'Comment', id: string } | null | undefined, children?: Array<{ __typename?: 'Comment', id: string }> | null | undefined }> | null | undefined, errors?: Array<{ __typename?: 'Error', path: string, message: string }> | null | undefined } };
+
 export type CreatePostMutationVariables = Exact<{
   post: PostInput;
 }>;
 
 
 export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'PostResponse', post?: { __typename?: 'Post', id: string, headline: string, text: string, topic: { __typename?: 'Topic', name: string } } | null | undefined, errors?: Array<{ __typename?: 'Error', path: string, message: string }> | null | undefined } };
+
+export type DeleteCommentMutationVariables = Exact<{
+  commentId: Scalars['String'];
+}>;
+
+
+export type DeleteCommentMutation = { __typename?: 'Mutation', deleteComment: boolean };
 
 export type ForgotPasswordMutationVariables = Exact<{
   email: Scalars['String'];
@@ -300,6 +320,36 @@ export const UserFragmentFragmentDoc = gql`
   email
 }
     `;
+export const CreateCommentDocument = gql`
+    mutation CreateComment($comment: CommentInput!) {
+  createComment(comment: $comment) {
+    comments {
+      id
+      text
+      postedBy {
+        id
+        firstName
+        lastName
+      }
+      parent {
+        id
+      }
+      children {
+        id
+      }
+      createdAt
+    }
+    errors {
+      path
+      message
+    }
+  }
+}
+    `;
+
+export function useCreateCommentMutation() {
+  return Urql.useMutation<CreateCommentMutation, CreateCommentMutationVariables>(CreateCommentDocument);
+};
 export const CreatePostDocument = gql`
     mutation CreatePost($post: PostInput!) {
   createPost(post: $post) {
@@ -321,6 +371,15 @@ export const CreatePostDocument = gql`
 
 export function useCreatePostMutation() {
   return Urql.useMutation<CreatePostMutation, CreatePostMutationVariables>(CreatePostDocument);
+};
+export const DeleteCommentDocument = gql`
+    mutation DeleteComment($commentId: String!) {
+  deleteComment(commentId: $commentId)
+}
+    `;
+
+export function useDeleteCommentMutation() {
+  return Urql.useMutation<DeleteCommentMutation, DeleteCommentMutationVariables>(DeleteCommentDocument);
 };
 export const ForgotPasswordDocument = gql`
     mutation ForgotPassword($email: String!) {
