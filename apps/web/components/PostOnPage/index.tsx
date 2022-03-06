@@ -9,10 +9,9 @@ import {
   Text,
   Button,
   Divider,
-  Skeleton
+  useToast
 } from '@chakra-ui/react';
 import { ChatIcon } from '@chakra-ui/icons';
-import { usePostCommentsQuery } from 'dad-gql';
 import Comment from './Comment';
 import CommentForm from './CommentForm';
 import { Post, User } from '../../types';
@@ -28,6 +27,8 @@ interface FeaturedPostProps {
 export default function PostOnPage({ post, user, postId }: FeaturedPostProps) {
   const [isOpen, setIsOpen] = useState(false);
   const onClose = () => setIsOpen(false);
+  const toast = useToast();
+  const [postToDelete, setPostToDelete] = useState();
 
   return (
     <>
@@ -73,18 +74,31 @@ export default function PostOnPage({ post, user, postId }: FeaturedPostProps) {
           )}
         </Flex>
       </Flex>
-      <CommentForm user={user} />
+      <CommentForm user={user} postId={postId} />
       <Box mt={8}>
         <Divider mb={4} />
         {post.comments.length === 0 ? (
           <Text>There are no comments. Be the first to comment.</Text>
         ) : (
           post.comments.map(comment => (
-            <Comment key={comment.id} comment={comment} user={user} />
+            <Comment
+              key={comment.id}
+              comment={comment}
+              user={user}
+              postId={postId}
+              toast={toast}
+            />
           ))
         )}
       </Box>
-      <ConfirmDelete item='post' isOpen={isOpen} onClose={onClose} />
+      <ConfirmDelete
+        item='post'
+        isOpen={isOpen}
+        onClose={onClose}
+        itemToDelete={postToDelete}
+        setItemToDelete={setPostToDelete}
+        toast={toast}
+      />
     </>
   );
 }

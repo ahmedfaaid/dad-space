@@ -1,12 +1,22 @@
 import { Dispatch, SetStateAction } from 'react';
-import { Box, Flex, Textarea, Button, Text, Link } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Textarea,
+  Button,
+  Text,
+  Link,
+  useToast
+} from '@chakra-ui/react';
 import { useFormik } from 'formik';
+import { useCreateCommentMutation } from 'dad-gql';
 import { User } from '../../types';
 
 interface CommentFormProps {
   user: User;
   parentId?: string;
   parentCreator?: User;
+  postId: string;
   setShowReplyForm?: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -14,15 +24,48 @@ export default function CommentForm({
   user,
   parentId,
   parentCreator,
+  postId,
   setShowReplyForm
 }: CommentFormProps) {
+  const [_, createComment] = useCreateCommentMutation();
+  const toast = useToast();
   const { handleSubmit, handleChange, isSubmitting, values, resetForm } =
     useFormik({
       initialValues: {
         text: ''
       },
       onSubmit: async (values, { setSubmitting }) => {
-        console.log(values);
+        const res = await createComment({
+          comment: {
+            ...values,
+            postId,
+            parentId
+          }
+        });
+
+        if (res.data.createComment.errors) {
+          toast({
+            title: 'Error creating comment',
+            description: `There was an error creating the comment: ${res.data.createComment.errors[0].message}`,
+            status: 'error',
+            duration: 9000,
+            isClosable: true
+          });
+        } else if (res.data.createComment.comments) {
+          resetForm();
+          toast({
+            title: 'Comment created',
+            description: 'You have successfully created a comment!',
+            status: 'success',
+            duration: 9000,
+            isClosable: true
+          });
+          if (parentId && setShowReplyForm) {
+            setShowReplyForm(false);
+          }
+        }
+
+        setSubmitting(false);
       }
     });
 

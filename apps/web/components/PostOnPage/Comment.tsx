@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import {
   Avatar,
   Box,
@@ -18,16 +18,23 @@ import CommentForm from './CommentForm';
 interface CommentProps {
   comment: CommentType;
   user: User;
+  postId: string;
+  toast: (options: any) => void;
 }
 
-export default function Comment({ comment, user }: CommentProps) {
+export default function Comment({
+  comment,
+  user,
+  postId,
+  toast
+}: CommentProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [showReplyForm, setShowReplyForm] = useState(false);
   const onClose = () => setIsOpen(false);
 
   return (
     <>
-      <Box>
+      <Box mt={4}>
         <Flex align='center'>
           <Avatar src='https://bit.ly/broken-link' w={5} h={5} />
           <Text ml={2} fontSize='sm'>
@@ -71,10 +78,17 @@ export default function Comment({ comment, user }: CommentProps) {
           user={user}
           parentId={comment.id}
           parentCreator={comment.postedBy}
+          postId={postId}
           setShowReplyForm={setShowReplyForm}
         />
       )}
-      <ConfirmDelete item='comment' isOpen={isOpen} onClose={onClose} />
+      <ConfirmDelete
+        item='comment'
+        isOpen={isOpen}
+        onClose={onClose}
+        itemToDelete={comment.id}
+        toast={toast}
+      />
     </>
   );
 }
