@@ -34,6 +34,7 @@ export type Topic = {
   id?: string;
   name: string;
   description?: string;
+  slug?: string;
 };
 
 export type Comment = {

@@ -16,7 +16,7 @@ interface TopicCardProps {
 
 export default function TopicCard({ topic, index }: TopicCardProps) {
   return (
-    <NextLink href={`/topics/${topic.name}`}>
+    <NextLink href={`/topics/${topic.slug}`}>
       <Flex
         as='a'
         bg='white'
