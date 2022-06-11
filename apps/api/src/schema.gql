@@ -90,6 +90,7 @@ type Topic {
   moderators: [User!]
   name: String!
   posts: [Post!]
+  slug: String!
   updatedAt: DateTime!
 }
 

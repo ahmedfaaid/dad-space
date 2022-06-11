@@ -28,6 +28,10 @@ export class Topic {
   @Column()
   description: string;
 
+  @Field()
+  @Column()
+  slug: string;
+
   @Field(() => [User], { nullable: true })
   @ManyToMany(() => User, user => user.moderates)
   @JoinTable()
