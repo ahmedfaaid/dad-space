@@ -30,11 +30,7 @@ export default function SideMenu() {
     <GridItem>
       <Box textAlign='left'>
         <MenuItem to='/' icon={FaHome} text='Home' />
-        <MenuItem
-          to='/explore-topics'
-          icon={FaRegCompass}
-          text='Explore Topics'
-        />
+        <MenuItem to='/topics' icon={FaRegCompass} text='Explore Topics' />
         <MenuItem to='/my-posts' icon={FaRegFileAlt} text='My Posts' />
         <MenuItem to='/blog' icon={FaBookOpen} text='Blog' />
       </Box>
