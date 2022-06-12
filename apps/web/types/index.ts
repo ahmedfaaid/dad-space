@@ -35,6 +35,7 @@ export type Topic = {
   name: string;
   description?: string;
   slug?: string;
+  postCount?: number;
 };
 
 export type Comment = {

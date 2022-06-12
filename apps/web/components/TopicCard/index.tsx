@@ -8,6 +8,7 @@ import {
   Spacer
 } from '@chakra-ui/react';
 import { Topic } from '../../types';
+import { shortenNumber } from '../../utils/fns';
 
 interface TopicCardProps {
   topic: Topic;
@@ -30,7 +31,7 @@ export default function TopicCard({ topic, index }: TopicCardProps) {
         <Text>{topic.name}</Text>
         <Spacer />
         <Text fontSize='12px' fontWeight='semibold' mr={2}>
-          5.1k
+          {shortenNumber(topic.postCount)}
         </Text>
       </Flex>
     </NextLink>
