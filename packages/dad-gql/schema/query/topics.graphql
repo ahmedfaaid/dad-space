@@ -3,5 +3,6 @@ query Topics($query: String) {
     id
     name
     slug
+    postCount
   }
 }

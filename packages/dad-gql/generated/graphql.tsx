@@ -176,6 +176,7 @@ export type Topic = {
   id: Scalars['ID'];
   moderators?: Maybe<Array<User>>;
   name: Scalars['String'];
+  postCount?: Maybe<Scalars['Int']>;
   posts?: Maybe<Array<Post>>;
   slug: Scalars['String'];
   updatedAt: Scalars['DateTime'];
@@ -318,7 +319,7 @@ export type TopicsQueryVariables = Exact<{
 }>;
 
 
-export type TopicsQuery = { __typename?: 'Query', topics: Array<{ __typename?: 'Topic', id: string, name: string, slug: string }> };
+export type TopicsQuery = { __typename?: 'Query', topics: Array<{ __typename?: 'Topic', id: string, name: string, slug: string, postCount?: number | null | undefined }> };
 
 export const ErrorFragmentFragmentDoc = gql`
     fragment ErrorFragment on Error {
@@ -616,6 +617,7 @@ export const TopicsDocument = gql`
     id
     name
     slug
+    postCount
   }
 }
     `;
