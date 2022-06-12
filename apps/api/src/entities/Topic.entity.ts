@@ -9,7 +9,7 @@ import {
   JoinColumn,
   OneToMany
 } from 'typeorm';
-import { ObjectType, Field, ID } from 'type-graphql';
+import { ObjectType, Field, ID, Int } from 'type-graphql';
 import { User } from './User.entity';
 import { Post } from './Post.entity';
 
@@ -41,6 +41,10 @@ export class Topic {
   @OneToMany(() => Post, post => post.topic)
   @JoinColumn({ name: 'id' })
   posts?: Post[];
+
+  @Field(() => Int, { nullable: true })
+  @Column({ type: 'int', nullable: true })
+  postCount?: number;
 
   @Field()
   @CreateDateColumn()

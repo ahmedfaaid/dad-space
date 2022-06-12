@@ -1,10 +1,23 @@
 import { ILike, getRepository } from 'typeorm';
-import { Resolver, Query, Arg, FieldResolver, Root } from 'type-graphql';
+import { Resolver, Query, Arg, FieldResolver, Root, Int } from 'type-graphql';
 import { Topic } from '../entities/Topic.entity';
 import { Post } from '../entities/Post.entity';
 
-@Resolver()
+@Resolver(Topic)
 export class TopicResolver {
+  @FieldResolver(() => Int, { nullable: true })
+  async postCount(@Root() topic: Topic): Promise<number> {
+    const PostRepository = getRepository(Post);
+
+    const count = await PostRepository.count({
+      where: {
+        topic: topic.id
+      }
+    });
+
+    return count;
+  }
+
   @Query(() => [Topic])
   async topics(
     @Arg('query', { nullable: true }) query: string
