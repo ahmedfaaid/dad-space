@@ -20,19 +20,25 @@ export class TopicResolver {
 
   @Query(() => [Topic])
   async topics(
-    @Arg('query', { nullable: true }) query: string
+    @Arg('query', { nullable: true }) query: string,
+    @Arg('top', { nullable: true }) top: boolean
   ): Promise<Topic[]> {
     const topicRepository = getRepository(Topic);
 
-    return await topicRepository.find(
-      query
-        ? {
-            where: {
-              name: ILike(`%${query}%`)
-            }
-          }
-        : {}
-    );
+    return await topicRepository.find({
+      ...(query && {
+        where: {
+          name: ILike(`%${query}%`)
+        }
+      }),
+      ...(top && {
+        order: {
+          postCount: 'DESC'
+        },
+        take: 5,
+        skip: 0
+      })
+    });
   }
 
   @Query(() => [Post], { nullable: true })

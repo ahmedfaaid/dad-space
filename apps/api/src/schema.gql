@@ -79,7 +79,7 @@ type Query {
   post(id: String!): PostResponse!
   posts(limit: Int!, skip: Int!): [Post!]!
   postsByTopic(slug: String!): [Post!]
-  topics(query: String): [Topic!]!
+  topics(query: String, top: Boolean): [Topic!]!
   user: User!
   users: [User!]!
 }
