@@ -137,6 +137,7 @@ export type Query = {
   me?: Maybe<User>;
   post: PostResponse;
   posts: Array<Post>;
+  postsByTopic?: Maybe<Array<Post>>;
   topics: Array<Topic>;
   user: User;
   users: Array<User>;
@@ -156,6 +157,11 @@ export type QueryPostArgs = {
 export type QueryPostsArgs = {
   limit: Scalars['Int'];
   skip: Scalars['Int'];
+};
+
+
+export type QueryPostsByTopicArgs = {
+  slug: Scalars['String'];
 };
 
 
@@ -299,6 +305,13 @@ export type PostsQueryVariables = Exact<{
 
 
 export type PostsQuery = { __typename?: 'Query', posts: Array<{ __typename?: 'Post', id: string, headline: string, text: string, createdAt: any, voteCount: number, voteStatus?: number | null | undefined, topic: { __typename?: 'Topic', name: string }, postedBy: { __typename?: 'User', id: string, firstName: string, lastName: string }, votes?: Array<{ __typename?: 'Vote', id: string, value: number, user: { __typename?: 'User', id: string } }> | null | undefined, comments: Array<{ __typename?: 'Comment', id: string }> }> };
+
+export type PostsByTopicQueryVariables = Exact<{
+  slug: Scalars['String'];
+}>;
+
+
+export type PostsByTopicQuery = { __typename?: 'Query', postsByTopic?: Array<{ __typename?: 'Post', id: string, headline: string, text: string, createdAt: any, voteCount: number, voteStatus?: number | null | undefined, topic: { __typename?: 'Topic', name: string }, postedBy: { __typename?: 'User', id: string, firstName: string, lastName: string }, votes?: Array<{ __typename?: 'Vote', id: string, value: number, user: { __typename?: 'User', id: string } }> | null | undefined, comments: Array<{ __typename?: 'Comment', id: string }> }> | null | undefined };
 
 export type TopicsQueryVariables = Exact<{
   query?: InputMaybe<Scalars['String']>;
@@ -562,6 +575,40 @@ export const PostsDocument = gql`
 
 export function usePostsQuery(options: Omit<Urql.UseQueryArgs<PostsQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<PostsQuery>({ query: PostsDocument, ...options });
+};
+export const PostsByTopicDocument = gql`
+    query PostsByTopic($slug: String!) {
+  postsByTopic(slug: $slug) {
+    id
+    headline
+    text
+    createdAt
+    topic {
+      name
+    }
+    postedBy {
+      id
+      firstName
+      lastName
+    }
+    voteCount
+    voteStatus
+    votes {
+      id
+      value
+      user {
+        id
+      }
+    }
+    comments {
+      id
+    }
+  }
+}
+    `;
+
+export function usePostsByTopicQuery(options: Omit<Urql.UseQueryArgs<PostsByTopicQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<PostsByTopicQuery>({ query: PostsByTopicDocument, ...options });
 };
 export const TopicsDocument = gql`
     query Topics($query: String) {

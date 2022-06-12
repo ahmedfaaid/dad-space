@@ -1,0 +1,28 @@
+query PostsByTopic($slug: String!) {
+  postsByTopic(slug: $slug) {
+    id
+    headline
+    text
+    createdAt
+    topic {
+      name
+    }
+    postedBy {
+      id
+      firstName
+      lastName
+    }
+    voteCount
+    voteStatus
+    votes {
+      id
+      value
+      user {
+        id
+      }
+    }
+    comments {
+      id
+    }
+  }
+}
