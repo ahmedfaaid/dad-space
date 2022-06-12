@@ -1,5 +1,5 @@
-query Topics($query: String) {
-  topics(query: $query) {
+query Topics($query: String, $top: Boolean) {
+  topics(query: $query, top: $top) {
     id
     name
     slug

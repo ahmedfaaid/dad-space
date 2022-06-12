@@ -167,6 +167,7 @@ export type QueryPostsByTopicArgs = {
 
 export type QueryTopicsArgs = {
   query?: InputMaybe<Scalars['String']>;
+  top?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type Topic = {
@@ -316,6 +317,7 @@ export type PostsByTopicQuery = { __typename?: 'Query', postsByTopic?: Array<{ _
 
 export type TopicsQueryVariables = Exact<{
   query?: InputMaybe<Scalars['String']>;
+  top?: InputMaybe<Scalars['Boolean']>;
 }>;
 
 
@@ -612,8 +614,8 @@ export function usePostsByTopicQuery(options: Omit<Urql.UseQueryArgs<PostsByTopi
   return Urql.useQuery<PostsByTopicQuery>({ query: PostsByTopicDocument, ...options });
 };
 export const TopicsDocument = gql`
-    query Topics($query: String) {
-  topics(query: $query) {
+    query Topics($query: String, $top: Boolean) {
+  topics(query: $query, top: $top) {
     id
     name
     slug
