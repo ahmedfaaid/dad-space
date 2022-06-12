@@ -78,6 +78,7 @@ type Query {
   me: User
   post(id: String!): PostResponse!
   posts(limit: Int!, skip: Int!): [Post!]!
+  postsByTopic(slug: String!): [Post!]
   topics(query: String): [Topic!]!
   user: User!
   users: [User!]!
