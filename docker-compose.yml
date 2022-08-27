@@ -5,3 +5,16 @@ services:
     hostname: redis
     ports:
       - '6379:6379'
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'postgres'
+      POSTGRES_DB: 'dad-space'
+      PGDATA: /tmp
+    volumes:
+      - database:/var/lib/postgresql/data
+    ports:
+      - 5544:5432
+volumes:
+  database:
