@@ -1,21 +1,21 @@
-import 'reflect-metadata';
-import express from 'express';
-import { ApolloServer } from 'apollo-server-express';
 import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
-import { buildSchema } from 'type-graphql';
-import { createConnection } from 'typeorm';
-import * as path from 'path';
+import { ApolloServer } from 'apollo-server-express';
+import connectRedis from 'connect-redis';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import express from 'express';
 import session from 'express-session';
-import connectRedis from 'connect-redis';
 import Redis from 'ioredis';
+import * as path from 'path';
+import 'reflect-metadata';
+import { buildSchema } from 'type-graphql';
+import { createConnection } from 'typeorm';
 
-import { UserResolver } from './resolvers/User.resolver';
-import { PostResolver } from './resolvers/Post.resolver';
-import { CommentResolver } from './resolvers/Comment.resolver';
 import { AuthResolver } from './resolvers/Auth.resolver';
+import { CommentResolver } from './resolvers/Comment.resolver';
+import { PostResolver } from './resolvers/Post.resolver';
 import { TopicResolver } from './resolvers/Topic.resolver';
+import { UserResolver } from './resolvers/User.resolver';
 
 dotenv.config();
 
