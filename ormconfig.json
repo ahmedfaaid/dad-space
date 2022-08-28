@@ -5,8 +5,8 @@
   "username": "postgres",
   "password": "postgres",
   "database": "dad-space",
-  "entities": ["src/entities/*.ts"],
-  "migrations": ["src/migrations/*.ts"],
+  "entities": ["src/entities/*.entity{.ts,.js}"],
+  "migrations": ["src/migrations/*{.ts,.js}"],
   "synchronize": true,
   "logging": true
 }
