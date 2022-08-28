@@ -27,7 +27,7 @@ Dads unite!
 
 - [ ] API integration
   - [x] Post creation
-  - [ ] Comment on post
+  - [x] Comment on post
 - [ ] Profile page
-- [ ] Explore topics page
-- [ ] Single topic page with posts
+- [x] Explore topics page
+- [x] Single topic page with posts
