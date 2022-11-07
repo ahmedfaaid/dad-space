@@ -1,28 +1,27 @@
-import { useState, useContext } from 'react';
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import {
-  Flex,
-  Stack,
-  Heading,
   Box,
-  useColorModeValue,
-  Link,
+  Button,
+  Flex,
   FormControl,
-  FormLabel,
-  Input,
   FormErrorMessage,
+  FormLabel,
+  Heading,
+  Input,
   InputGroup,
   InputRightElement,
-  Button,
+  Link,
+  Stack,
   Text,
+  useColorModeValue,
   useToast
 } from '@chakra-ui/react';
-import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { useFormik } from 'formik';
-import Layout from '../components/layout';
-import { loginSchema } from '../utils/formValidation';
+import NextLink from 'next/link';
+import { useRouter } from 'next/router';
+import { useContext, useState } from 'react';
 import { AuthContext } from '../context/auth';
+import { loginSchema } from '../utils/formValidation';
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -66,7 +65,7 @@ export default function Login() {
     });
 
   return (
-    <Layout>
+    <Box>
       <Flex mt={4} align='center' justify='center'>
         <Stack spacing={8} mx='auto' maxW='lg' py={12} px={6}>
           <Stack align='center'>
@@ -157,6 +156,6 @@ export default function Login() {
           </Box>
         </Stack>
       </Flex>
-    </Layout>
+    </Box>
   );
 }
