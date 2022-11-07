@@ -32,7 +32,7 @@ export default function SignUp() {
     authContext: { signup }
   } = useContext(AuthContext);
 
-  const { handleSubmit, handleChange, values, isSubmitting, errors } =
+  const { handleSubmit, handleChange, values, isSubmitting, errors, touched } =
     useFormik({
       initialValues: {
         firstName: '',
@@ -114,10 +114,10 @@ export default function SignUp() {
                       />
                     </FormControl>
                   </Box>
-                  {errors.firstName ? (
+                  {errors.firstName && touched ? (
                     <FormErrorMessage>{errors.firstName}</FormErrorMessage>
                   ) : null}
-                  {errors.lastName ? (
+                  {errors.lastName && touched ? (
                     <FormErrorMessage>{errors.lastName}</FormErrorMessage>
                   ) : null}
                 </HStack>
@@ -131,7 +131,7 @@ export default function SignUp() {
                     onChange={handleChange}
                     autoComplete='off'
                   />
-                  {errors.email ? (
+                  {errors.email && touched ? (
                     <FormErrorMessage>{errors.email}</FormErrorMessage>
                   ) : null}
                 </FormControl>
@@ -156,7 +156,7 @@ export default function SignUp() {
                       </Button>
                     </InputRightElement>
                   </InputGroup>
-                  {errors.password ? (
+                  {errors.password && touched ? (
                     <FormErrorMessage>{errors.password}</FormErrorMessage>
                   ) : null}
                 </FormControl>
@@ -183,7 +183,7 @@ export default function SignUp() {
                       </Button>
                     </InputRightElement>
                   </InputGroup>
-                  {errors.confirmPassword ? (
+                  {errors.confirmPassword && touched ? (
                     <FormErrorMessage>
                       {errors.confirmPassword}
                     </FormErrorMessage>

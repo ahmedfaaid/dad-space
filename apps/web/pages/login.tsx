@@ -31,7 +31,7 @@ export default function Login() {
     authContext: { login }
   } = useContext(AuthContext);
 
-  const { handleSubmit, handleChange, values, isSubmitting, errors } =
+  const { handleSubmit, handleChange, values, isSubmitting, errors, touched } =
     useFormik({
       initialValues: {
         email: '',
@@ -94,7 +94,7 @@ export default function Login() {
                     onChange={handleChange}
                     autoComplete='off'
                   />
-                  {errors.email ? (
+                  {errors.email && touched ? (
                     <FormErrorMessage>{errors.email}</FormErrorMessage>
                   ) : null}
                 </FormControl>
@@ -119,7 +119,7 @@ export default function Login() {
                       </Button>
                     </InputRightElement>
                   </InputGroup>
-                  {errors.password ? (
+                  {errors.password && touched ? (
                     <FormErrorMessage>{errors.password}</FormErrorMessage>
                   ) : null}
                 </FormControl>
