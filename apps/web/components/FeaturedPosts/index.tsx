@@ -1,4 +1,4 @@
-import { Box, Flex, Spinner } from '@chakra-ui/react';
+import { Box, Flex, Spinner, Text } from '@chakra-ui/react';
 import { usePostsQuery } from 'dad-gql';
 import FeaturedPost from '../FeaturedPost';
 
@@ -18,9 +18,13 @@ export default function FeaturedPosts() {
         </Flex>
       ) : (
         <Box>
-          {data?.posts.map(post => (
-            <FeaturedPost key={post.id} post={post} />
-          ))}
+          {data.posts.length > 0 ? (
+            data.posts.map(post => <FeaturedPost key={post.id} post={post} />)
+          ) : (
+            <Text textColor='#7B7B7B'>
+              There are no featured posts. Create a post.
+            </Text>
+          )}
         </Box>
       )}
     </>
