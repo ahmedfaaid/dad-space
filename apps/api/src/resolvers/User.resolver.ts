@@ -1,22 +1,48 @@
+import { Query, Resolver } from 'type-graphql';
 import { getRepository } from 'typeorm';
-import { Arg, Mutation, Query, Resolver } from 'type-graphql';
-import { User, UserInput } from '../entities/User.entity';
+import { User, UserResponse } from '../entities/User.entity';
 
 @Resolver()
 export class UserResolver {
-  @Query(() => [User])
-  async users(): Promise<User[]> {
+  @Query(() => UserResponse)
+  async users(): Promise<UserResponse> {
     const userRepository = getRepository(User);
 
-    return await userRepository.find({
-      relations: ['posts', 'comments', 'moderates']
-    });
+    try {
+      const users = await userRepository.find({
+        relations: ['posts', 'comments', 'moderates']
+      });
+
+      return { users };
+    } catch (error: any) {
+      return {
+        errors: [
+          {
+            path: 'users',
+            message: error.message
+          }
+        ]
+      };
+    }
   }
 
-  @Query(() => User)
-  async user(id: string): Promise<User> {
+  @Query(() => UserResponse)
+  async user(id: string): Promise<UserResponse> {
     const userRepository = getRepository(User);
 
-    return await userRepository.findOneOrFail(id);
+    try {
+      const user = await userRepository.findOneOrFail(id);
+
+      return { users: [user] };
+    } catch (error: any) {
+      return {
+        errors: [
+          {
+            path: 'user',
+            message: error.message
+          }
+        ]
+      };
+    }
   }
 }
