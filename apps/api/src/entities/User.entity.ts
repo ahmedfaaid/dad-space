@@ -1,17 +1,17 @@
+import { Field, ID, InputType, ObjectType } from 'type-graphql';
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
+  Entity,
+  ManyToMany,
   OneToMany,
-  ManyToMany
+  PrimaryGeneratedColumn,
+  UpdateDateColumn
 } from 'typeorm';
-import { ObjectType, Field, InputType, ID } from 'type-graphql';
-import { Post } from './Post.entity';
 import { Comment } from './Comment.entity';
-import { Topic } from './Topic.entity';
 import { Error } from './Error.entity';
+import { Post } from './Post.entity';
+import { Topic } from './Topic.entity';
 import { Vote } from './Vote.entity';
 
 @Entity()
@@ -63,8 +63,8 @@ export class User {
 
 @ObjectType()
 export class UserResponse {
-  @Field(() => User, { nullable: true })
-  user?: User;
+  @Field(() => [User], { nullable: true })
+  users?: User[];
 
   @Field(() => [Error], { nullable: true })
   errors?: Error[];

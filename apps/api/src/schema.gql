@@ -118,7 +118,7 @@ input UserInput {
 
 type UserResponse {
   errors: [Error!]
-  user: User
+  users: [User!]
 }
 
 type Vote {

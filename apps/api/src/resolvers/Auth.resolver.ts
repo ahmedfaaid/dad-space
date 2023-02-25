@@ -1,6 +1,6 @@
-import { getRepository } from 'typeorm';
-import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import * as argon2 from 'argon2';
+import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
+import { getRepository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import { User, UserInput, UserResponse } from '../entities/User.entity';
 import { Context } from '../types/Context';
@@ -44,7 +44,7 @@ export class AuthResolver {
 
       ctx.req.session.userId = user.id;
 
-      return { user };
+      return { users: [user] };
     } catch (err: any) {
       return {
         errors: [{ path: 'login', message: err.message }]
@@ -72,7 +72,7 @@ export class AuthResolver {
 
       ctx.req.session.userId = newUser.id;
 
-      return { user: newUser };
+      return { users: [newUser] };
     } catch (err: any) {
       return {
         errors: [{ path: 'signup', message: 'Email already in use' }]
@@ -173,7 +173,7 @@ export class AuthResolver {
 
       ctx.req.session.userId = updatedUser.id;
 
-      return { user: updatedUser };
+      return { users: [updatedUser] };
     } catch (error) {
       return {
         errors: [
