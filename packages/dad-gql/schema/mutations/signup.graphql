@@ -1,15 +1,10 @@
 mutation Signup($user: UserInput!) {
   signup(user: $user) {
-    user {
-      id
-      firstName
-      lastName
-      email
-      createdAt
+    users {
+      ...UserFragment
     }
     errors {
-      path
-      message
+      ...ErrorFragment
     }
   }
 }

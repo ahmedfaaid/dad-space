@@ -13,7 +13,6 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
   DateTime: any;
 };
 
@@ -139,8 +138,8 @@ export type Query = {
   posts: Array<Post>;
   postsByTopic?: Maybe<Array<Post>>;
   topics: Array<Topic>;
-  user: User;
-  users: Array<User>;
+  user: UserResponse;
+  users: UserResponse;
 };
 
 
@@ -207,7 +206,7 @@ export type UserInput = {
 export type UserResponse = {
   __typename?: 'UserResponse';
   errors?: Maybe<Array<Error>>;
-  user?: Maybe<User>;
+  users?: Maybe<Array<User>>;
 };
 
 export type Vote = {
@@ -258,7 +257,7 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login?: { __typename?: 'UserResponse', user?: { __typename?: 'User', id: string, firstName: string, lastName: string, email: string } | null | undefined, errors?: Array<{ __typename?: 'Error', path: string, message: string }> | null | undefined } | null | undefined };
+export type LoginMutation = { __typename?: 'Mutation', login?: { __typename?: 'UserResponse', users?: Array<{ __typename?: 'User', id: string, firstName: string, lastName: string, email: string }> | null | undefined, errors?: Array<{ __typename?: 'Error', path: string, message: string }> | null | undefined } | null | undefined };
 
 export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -271,14 +270,14 @@ export type ResetPasswordMutationVariables = Exact<{
 }>;
 
 
-export type ResetPasswordMutation = { __typename?: 'Mutation', resetPassword: { __typename?: 'UserResponse', user?: { __typename?: 'User', id: string, firstName: string, lastName: string, email: string } | null | undefined, errors?: Array<{ __typename?: 'Error', path: string, message: string }> | null | undefined } };
+export type ResetPasswordMutation = { __typename?: 'Mutation', resetPassword: { __typename?: 'UserResponse', users?: Array<{ __typename?: 'User', id: string, firstName: string, lastName: string, email: string }> | null | undefined, errors?: Array<{ __typename?: 'Error', path: string, message: string }> | null | undefined } };
 
 export type SignupMutationVariables = Exact<{
   user: UserInput;
 }>;
 
 
-export type SignupMutation = { __typename?: 'Mutation', signup?: { __typename?: 'UserResponse', user?: { __typename?: 'User', id: string, firstName: string, lastName: string, email: string, createdAt: any } | null | undefined, errors?: Array<{ __typename?: 'Error', path: string, message: string }> | null | undefined } | null | undefined };
+export type SignupMutation = { __typename?: 'Mutation', signup?: { __typename?: 'UserResponse', users?: Array<{ __typename?: 'User', id: string, firstName: string, lastName: string, email: string }> | null | undefined, errors?: Array<{ __typename?: 'Error', path: string, message: string }> | null | undefined } | null | undefined };
 
 export type VoteMutationVariables = Exact<{
   value: Scalars['Int'];
@@ -410,19 +409,16 @@ export function useForgotPasswordMutation() {
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {
-    user {
-      id
-      firstName
-      lastName
-      email
+    users {
+      ...UserFragment
     }
     errors {
-      path
-      message
+      ...ErrorFragment
     }
   }
 }
-    `;
+    ${UserFragmentFragmentDoc}
+${ErrorFragmentFragmentDoc}`;
 
 export function useLoginMutation() {
   return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
@@ -439,7 +435,7 @@ export function useLogoutMutation() {
 export const ResetPasswordDocument = gql`
     mutation ResetPassword($newPassword: String!, $token: String!) {
   resetPassword(newPassword: $newPassword, token: $token) {
-    user {
+    users {
       ...UserFragment
     }
     errors {
@@ -456,20 +452,16 @@ export function useResetPasswordMutation() {
 export const SignupDocument = gql`
     mutation Signup($user: UserInput!) {
   signup(user: $user) {
-    user {
-      id
-      firstName
-      lastName
-      email
-      createdAt
+    users {
+      ...UserFragment
     }
     errors {
-      path
-      message
+      ...ErrorFragment
     }
   }
 }
-    `;
+    ${UserFragmentFragmentDoc}
+${ErrorFragmentFragmentDoc}`;
 
 export function useSignupMutation() {
   return Urql.useMutation<SignupMutation, SignupMutationVariables>(SignupDocument);
@@ -494,8 +486,8 @@ export const MeDocument = gql`
 }
     `;
 
-export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
+export function useMeQuery(options?: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'>) {
+  return Urql.useQuery<MeQuery, MeQueryVariables>({ query: MeDocument, ...options });
 };
 export const PostDocument = gql`
     query Post($id: String!) {
@@ -542,8 +534,8 @@ export const PostDocument = gql`
 }
     `;
 
-export function usePostQuery(options: Omit<Urql.UseQueryArgs<PostQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<PostQuery>({ query: PostDocument, ...options });
+export function usePostQuery(options: Omit<Urql.UseQueryArgs<PostQueryVariables>, 'query'>) {
+  return Urql.useQuery<PostQuery, PostQueryVariables>({ query: PostDocument, ...options });
 };
 export const PostsDocument = gql`
     query Posts($skip: Int!, $limit: Int!) {
@@ -576,8 +568,8 @@ export const PostsDocument = gql`
 }
     `;
 
-export function usePostsQuery(options: Omit<Urql.UseQueryArgs<PostsQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<PostsQuery>({ query: PostsDocument, ...options });
+export function usePostsQuery(options: Omit<Urql.UseQueryArgs<PostsQueryVariables>, 'query'>) {
+  return Urql.useQuery<PostsQuery, PostsQueryVariables>({ query: PostsDocument, ...options });
 };
 export const PostsByTopicDocument = gql`
     query PostsByTopic($slug: String!) {
@@ -610,8 +602,8 @@ export const PostsByTopicDocument = gql`
 }
     `;
 
-export function usePostsByTopicQuery(options: Omit<Urql.UseQueryArgs<PostsByTopicQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<PostsByTopicQuery>({ query: PostsByTopicDocument, ...options });
+export function usePostsByTopicQuery(options: Omit<Urql.UseQueryArgs<PostsByTopicQueryVariables>, 'query'>) {
+  return Urql.useQuery<PostsByTopicQuery, PostsByTopicQueryVariables>({ query: PostsByTopicDocument, ...options });
 };
 export const TopicsDocument = gql`
     query Topics($query: String, $top: Boolean) {
@@ -624,6 +616,6 @@ export const TopicsDocument = gql`
 }
     `;
 
-export function useTopicsQuery(options: Omit<Urql.UseQueryArgs<TopicsQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<TopicsQuery>({ query: TopicsDocument, ...options });
+export function useTopicsQuery(options?: Omit<Urql.UseQueryArgs<TopicsQueryVariables>, 'query'>) {
+  return Urql.useQuery<TopicsQuery, TopicsQueryVariables>({ query: TopicsDocument, ...options });
 };
