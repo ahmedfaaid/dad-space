@@ -1,13 +1,13 @@
-import { createContext, useMemo, useState, useEffect } from 'react';
 import {
+  useForgotPasswordMutation,
   useLoginMutation,
   useLogoutMutation,
-  useSignupMutation,
   useMeQuery,
-  useForgotPasswordMutation,
-  useResetPasswordMutation
+  useResetPasswordMutation,
+  useSignupMutation
 } from 'dad-gql';
-import { User, AuthState } from '../types';
+import { createContext, useEffect, useMemo, useState } from 'react';
+import { AuthState, User } from '../types';
 
 const AuthContext = createContext<AuthState>(null);
 
@@ -36,8 +36,8 @@ const AuthProvider = ({ children }) => {
         if (res.data?.login.errors) {
           setUser(null);
           return { ok: false, errors: res.data.login.errors[0].message };
-        } else if (res.data?.login.user) {
-          setUser(res.data.login.user);
+        } else if (res.data?.login.users) {
+          setUser(res.data.login.users[0]);
           return { ok: true };
         }
       },
@@ -47,8 +47,8 @@ const AuthProvider = ({ children }) => {
         if (res.data?.signup.errors) {
           setUser(null);
           return { ok: false, errors: res.data.signup.errors[0].message };
-        } else if (res.data?.signup.user) {
-          setUser(res.data.signup.user);
+        } else if (res.data?.signup.users) {
+          setUser(res.data.signup.users[0]);
           return { ok: true };
         }
       },
@@ -70,8 +70,8 @@ const AuthProvider = ({ children }) => {
             ok: false,
             errors: res.data.resetPassword.errors[0].message
           };
-        } else if (res.data?.resetPassword.user) {
-          setUser(res.data.resetPassword.user);
+        } else if (res.data?.resetPassword.users) {
+          setUser(res.data.resetPassword.users[0]);
           return { ok: true };
         }
       }
