@@ -10,7 +10,7 @@ Dads unite!
 
 - [ ] Topic creation
 - [ ] Use try-catch to handle resolver errors
-  - [ ] User
+  - [x] User
   - [ ] Topic
   - [ ] Post
     - [x] Create Post
